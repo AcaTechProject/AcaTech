@@ -23,10 +23,10 @@ public class ClassController {
 
     @GetMapping("/user/class/{id}")
     public List<ClassListResponseDto> searchById(@PathVariable Long id) {
-        // 만약 파라미터의 id 값과 classService의 searchById 리스트 중 user_id가 같은 경우만 출력
         List<ClassListResponseDto> classList = classService.searchById(id);
 
         // user_id가 id와 일치하는 수업 목록만 추려서 반환
+        // 컨트롤러에서 필터를 사용하는게 맞는방법일지!
         return classList.stream()
                 .filter(classDto -> classDto.getUser().equals(id))
                 .collect(Collectors.toList());

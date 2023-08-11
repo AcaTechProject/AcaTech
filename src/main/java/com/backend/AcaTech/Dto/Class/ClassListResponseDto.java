@@ -2,7 +2,7 @@ package com.backend.AcaTech.Dto.Class;
 
 // 담당수업 조회
 
-import com.backend.AcaTech.Domain.UserClass;
+import com.backend.AcaTech.Domain.Class.UserClass;
 import lombok.Getter;
 
 @Getter

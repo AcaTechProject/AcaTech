@@ -1,8 +1,7 @@
-package com.backend.AcaTech.Repository;
+package com.backend.AcaTech.Repository.Class;
 
 
-import com.backend.AcaTech.Domain.ClassName;
-import com.backend.AcaTech.Domain.UserClass;
+import com.backend.AcaTech.Domain.Class.ClassName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

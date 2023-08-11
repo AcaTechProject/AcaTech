@@ -1,11 +1,10 @@
 package com.backend.AcaTech.Service;
 
-import com.backend.AcaTech.Domain.UserClass;
+import com.backend.AcaTech.Domain.Class.UserClass;
 import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
-import com.backend.AcaTech.Repository.UserClassRepository;
+import com.backend.AcaTech.Repository.Class.UserClassRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 

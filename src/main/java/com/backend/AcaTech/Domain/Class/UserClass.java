@@ -1,6 +1,8 @@
-package com.backend.AcaTech.Domain;
+package com.backend.AcaTech.Domain.Class;
 
 
+import com.backend.AcaTech.Domain.Class.ClassName;
+import com.backend.AcaTech.Domain.Class.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

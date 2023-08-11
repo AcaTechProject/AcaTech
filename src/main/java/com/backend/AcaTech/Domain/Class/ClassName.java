@@ -1,4 +1,4 @@
-package com.backend.AcaTech.Domain;
+package com.backend.AcaTech.Domain.Class;
 
 
 import jakarta.persistence.*;
