@@ -20,4 +20,5 @@ public class UserClass {
     @ManyToOne(cascade = CascadeType.MERGE, targetEntity = ClassName.class)
     @JoinColumn(name = "class_id", updatable = false)
     private ClassName user_class;
+    
 }
