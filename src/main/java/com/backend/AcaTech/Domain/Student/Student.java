@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -63,6 +65,11 @@ public class Student {
     private Date update_date;
 
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+    private List<StudentClass> classes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+    private List<StudentFamily> family = new ArrayList<>();
 
     @Builder
     public Student(String name, String gender, String birth, String school, String grade, String phone, String etc, String image, String teacher, String parentPhone, String st_write, String st_update_write, Date first_date, Date update_date) {

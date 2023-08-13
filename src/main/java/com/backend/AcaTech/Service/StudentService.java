@@ -78,4 +78,14 @@ public class StudentService {
         List<StudentClass> classInfos = studentClassRepository.findByStudent(student);
         return new StudentResponseDto(student, familyInfos, classInfos);
     }
+
+    // 학생 정보 삭제
+    @Transactional
+    public void delete(Long id){
+        Student student = studentRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
+
+        studentRepository.delete(student);
+    }
+
 }

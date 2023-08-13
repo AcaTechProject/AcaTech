@@ -18,7 +18,7 @@ public class StudentClass {
     @Column(name = "class_id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = Student.class)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Student.class)
     @JoinColumn(name = "st_id", updatable = false)
     private Student student;
 

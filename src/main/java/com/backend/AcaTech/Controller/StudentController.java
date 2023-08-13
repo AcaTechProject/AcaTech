@@ -21,4 +21,8 @@ public class StudentController {
     public StudentResponseDto searchById(@PathVariable Long id) {
         return studentService.searchById(id);
     }
+
+    // 학생 정보 삭제
+    @DeleteMapping("/student/{id}")
+    public void deleteStudent(@PathVariable Long id) {studentService.delete(id);}
 }
