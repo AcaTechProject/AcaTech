@@ -34,4 +34,5 @@ public class StudentFamily {
         this.fa_name = fa_name;
         this.fa_memo = fa_memo;
     }
+
 }

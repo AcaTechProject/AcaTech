@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface StudentFamilyRepository extends JpaRepository<StudentFamily, Long> {
     List<StudentFamily> findAllByOrderByIdDesc();
+
+    List<StudentFamily> findByStudent(Student student);
 }

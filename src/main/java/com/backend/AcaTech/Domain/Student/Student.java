@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
+
 @Entity
 @Getter
 @Setter
@@ -48,8 +50,22 @@ public class Student {
     @Column(name = "pa_phone", nullable = false)
     private String parentPhone;
 
+    @Column(name = "st_writer", nullable = false)
+    private String st_write;
+
+    @Column(name = "st_update_writer", nullable = false)
+    private String st_update_write;
+
+    @Column(name = "first_date", nullable = true)
+    private Date first_date;
+
+    @Column(name = "update_date", nullable = true)
+    private Date update_date;
+
+
+
     @Builder
-    public Student(String name, String gender, String birth, String school, String grade, String phone, String etc, String image, String teacher, String parentPhone) {
+    public Student(String name, String gender, String birth, String school, String grade, String phone, String etc, String image, String teacher, String parentPhone, String st_write, String st_update_write, Date first_date, Date update_date) {
         this.name = name;
         this.gender = gender;
         this.birth = birth;
@@ -60,5 +76,11 @@ public class Student {
         this.image = image;
         this.teacher = teacher;
         this.parentPhone = parentPhone;
+        this.st_write = st_write;;
+        this.st_update_write = st_update_write;
+        this.first_date = first_date;
+        this.update_date = update_date;
     }
+
+
 }

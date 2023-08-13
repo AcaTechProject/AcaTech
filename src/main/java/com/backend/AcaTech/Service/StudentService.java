@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StudentService {
@@ -36,6 +38,8 @@ public class StudentService {
                 .image(requestDto.getImage())
                 .teacher(requestDto.getTeacher())
                 .parentPhone(requestDto.getParentPhone())
+                .st_write(requestDto.getSt_write())
+                .st_update_write(requestDto.getSt_update_write())
                 .build();
 
         Student savedStudent = studentRepository.save(student);
@@ -69,6 +73,9 @@ public class StudentService {
     public StudentResponseDto searchById(Long id) {
         Student student = studentRepository.findById(id).
                 orElseThrow(()->new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
-        return new StudentResponseDto(student);
+
+        List<StudentFamily> familyInfos = studentFamilyRepository.findByStudent(student);
+        List<StudentClass> classInfos = studentClassRepository.findByStudent(student);
+        return new StudentResponseDto(student, familyInfos, classInfos);
     }
 }
