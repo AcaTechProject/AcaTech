@@ -5,6 +5,7 @@ import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
 import com.backend.AcaTech.Repository.Student.StudentClassRepository;
 import com.backend.AcaTech.Repository.Student.StudentFamilyRepository;
 import com.backend.AcaTech.Repository.Student.StudentRepository;
@@ -78,6 +79,62 @@ public class StudentService {
         List<StudentClass> classInfos = studentClassRepository.findByStudent(student);
         return new StudentResponseDto(student, familyInfos, classInfos);
     }
+
+    // 학생 정보 수정
+    @Transactional
+    public void updateStudent(Long id, StudentUpdateRequestDto requestDto) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
+
+        student.setName(requestDto.getName());
+        student.setGender(requestDto.getGender());
+        student.setBirth(requestDto.getBirth());
+        student.setSchool(requestDto.getSchool());
+        student.setGrade(requestDto.getGrade());
+        student.setPhone(requestDto.getPhone());
+        student.setEtc(requestDto.getEtc());
+        student.setImage(requestDto.getImage());
+        student.setTeacher(requestDto.getTeacher());
+        student.setParentPhone(requestDto.getParentPhone());
+        student.setSt_write(requestDto.getSt_write());
+        student.setSt_update_write(requestDto.getSt_update_write());
+
+        // 학생 정보 수정 후 저장
+        studentRepository.save(student);
+
+        // 가족 정보 업데이트
+        if (requestDto.getFamilyInfos() != null) {
+            // 기존 가족 정보 삭제
+            studentFamilyRepository.deleteByStudent(student);
+
+            // 새로운 가족 정보 추가
+            for (StudentCreateRequestDto.FamilyInfo familyInfo : requestDto.getFamilyInfos()) {
+                StudentFamily family = StudentFamily.builder()
+                        .student(student)
+                        .fa_name(familyInfo.getFa_name())
+                        .fa_memo(familyInfo.getFa_memo())
+                        .build();
+                studentFamilyRepository.save(family);
+            }
+        }
+
+        // 수강 정보 업데이트
+        if (requestDto.getClassInfos() != null) {
+            // 기존 수강 정보 삭제
+            studentClassRepository.deleteByStudent(student);
+
+            // 새로운 수강 정보 추가
+            for (StudentCreateRequestDto.ClassInfo classInfo : requestDto.getClassInfos()) {
+                StudentClass studentClass = StudentClass.builder()
+                        .student(student)
+                        .class_name(classInfo.getClass_name())
+                        .build();
+                studentClassRepository.save(studentClass);
+            }
+        }
+    }
+
+
 
     // 학생 정보 삭제
     @Transactional

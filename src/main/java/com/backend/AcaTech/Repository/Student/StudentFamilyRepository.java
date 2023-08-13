@@ -10,4 +10,6 @@ public interface StudentFamilyRepository extends JpaRepository<StudentFamily, Lo
     List<StudentFamily> findAllByOrderByIdDesc();
 
     List<StudentFamily> findByStudent(Student student);
+
+    void deleteByStudent(Student student);
 }
