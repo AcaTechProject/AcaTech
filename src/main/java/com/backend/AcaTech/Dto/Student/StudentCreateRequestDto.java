@@ -20,6 +20,7 @@ public class StudentCreateRequestDto {
     private String teacher;
     private String parentPhone;
     private List<FamilyInfo> familyInfos;
+    private List<ClassInfo> classInfos;
 
     public StudentCreateRequestDto(String name,String gender,String birth,String school,String grade,String etc,String phone, String image, String teacher, String parentPhone) {
         this.name = name;
@@ -44,5 +45,12 @@ public class StudentCreateRequestDto {
     public static class FamilyInfo {
         private String fa_name;
         private String fa_memo;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ClassInfo {
+        private String class_name;
     }
 }
