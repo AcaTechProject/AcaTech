@@ -30,10 +30,10 @@ public class StudentScore {
     @Column(name = "sco_test", nullable = false)
     private String sco_test;
 
-    @Column(name = "writer", nullable = true)
+    @Column(name = "writer", nullable = false)
     private String writer;
     @Builder
-    public StudentScore(Student student, String sco_season, String sco_test, String wirter) {
+    public StudentScore(Student student, String sco_season, String sco_test, String writer) {
         this.student = student;
         this.sco_season = sco_season;
         this.sco_test = sco_test;

@@ -6,6 +6,7 @@ import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
+import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Repository.Score.ScoreRepository;
 import com.backend.AcaTech.Repository.Score.StudentScroeRepository;
@@ -13,7 +14,11 @@ import com.backend.AcaTech.Repository.Student.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +37,7 @@ public class ScoreService {
                 .student(student)
                 .sco_season(requestDto.getSco_season())
                 .sco_test(requestDto.getSco_test())
-                .wirter(requestDto.getWriter())
+                .writer(requestDto.getWriter())
                 .build();
 
         StudentScore savedStudentScore = studentScroeRepository.save(studentScore);
@@ -49,6 +54,20 @@ public class ScoreService {
         }
         return savedStudentScore.getId();
     }
+
+
+    @Transactional
+    public List<ScoreListResponseDto> getStudentGrades(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+        List<StudentScore> scores = studentScroeRepository.findByStudent(student);
+
+        return scores.stream()
+                .map(ScoreListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
 
 
 }
