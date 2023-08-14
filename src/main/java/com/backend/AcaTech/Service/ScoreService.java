@@ -9,6 +9,8 @@ import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Repository.Score.ScoreRepository;
 import com.backend.AcaTech.Repository.Score.StudentScroeRepository;
+import com.backend.AcaTech.Repository.Student.StudentRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,15 @@ public class ScoreService {
 
     private final StudentScroeRepository studentScroeRepository;
     private final ScoreRepository scoreRepository;
+    private  final StudentRepository studentRepository;
+
     @Transactional
-    public Long create(ScoreCreateRequestDto requestDto) {
+    public Long create(Long id, ScoreCreateRequestDto requestDto) {
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + id));
+
         StudentScore studentScore = StudentScore.builder()
-                .student(requestDto.getStudent())  // Set the student
+                .student(student)
                 .sco_season(requestDto.getSco_season())
                 .sco_test(requestDto.getSco_test())
                 .wirter(requestDto.getWriter())
@@ -42,5 +49,6 @@ public class ScoreService {
         }
         return savedStudentScore.getId();
     }
+
 
 }
