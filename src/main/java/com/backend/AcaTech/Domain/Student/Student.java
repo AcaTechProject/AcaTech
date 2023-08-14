@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,10 +60,10 @@ public class Student {
     private String st_update_write;
 
     @Column(name = "first_date", nullable = true)
-    private Date first_date;
+    private LocalDate first_date;
 
     @Column(name = "update_date", nullable = true)
-    private Date update_date;
+    private LocalDate update_date;
 
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
@@ -72,7 +73,7 @@ public class Student {
     private List<StudentFamily> family = new ArrayList<>();
 
     @Builder
-    public Student(String name, String gender, String birth, String school, String grade, String phone, String etc, String image, String teacher, String parentPhone, String st_write, String st_update_write, Date first_date, Date update_date) {
+    public Student(String name, String gender, String birth, String school, String grade, String phone, String etc, String image, String teacher, String parentPhone, String st_write, String st_update_write, LocalDate first_date, LocalDate update_date) {
         this.name = name;
         this.gender = gender;
         this.birth = birth;

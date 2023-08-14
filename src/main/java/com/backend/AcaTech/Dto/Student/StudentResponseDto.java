@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,9 +28,9 @@ public class StudentResponseDto {
     private String st_write;
     private String st_update_write;
 
-    private Date first_date;
+    private LocalDate first_date;
 
-    private Date update_date;
+    private LocalDate update_date;
 
     private List<StudentResponseDto.FamilyInfo> familyInfos;
     private List<StudentResponseDto.ClassInfo> classInfos;

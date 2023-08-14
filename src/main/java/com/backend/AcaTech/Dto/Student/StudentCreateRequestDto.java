@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -25,11 +26,11 @@ public class StudentCreateRequestDto {
     private String st_write;
     private String st_update_write;
 
-    private Date first_date;
+    private LocalDate first_date;
 
-    private Date update_date;
+    private LocalDate update_date;
 
-    public StudentCreateRequestDto(String name,String gender,String birth,String school,String grade,String etc,String phone, String image, String teacher, String parentPhone, String st_write, String st_update_write) {
+    public StudentCreateRequestDto(String name,String gender,String birth,String school,String grade,String etc,String phone, String image, String teacher, String parentPhone, String st_write, String st_update_write, LocalDate first_date, LocalDate update_date) {
         this.name = name;
         this.gender = gender;
         this.birth = birth;
@@ -42,12 +43,12 @@ public class StudentCreateRequestDto {
         this.parentPhone = parentPhone;
         this.st_write = st_write;
         this.st_update_write = st_update_write;
-        this.first_date = first_date;
+        this.first_date = LocalDate.now();
         this.update_date = update_date;
     }
 
     public Student toEntity() {
-        return new Student(name, gender, birth, school, grade, etc, phone, image, teacher, parentPhone, st_write, st_update_write, (java.sql.Date) first_date, (java.sql.Date) update_date);
+        return new Student(name, gender, birth, school, grade, etc, phone, image, teacher, parentPhone, st_write, st_update_write, first_date, update_date);
     }
 
 

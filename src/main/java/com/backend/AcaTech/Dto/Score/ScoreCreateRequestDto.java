@@ -25,7 +25,7 @@ public class ScoreCreateRequestDto {
     private LocalDate score_date;
 
     private List<ScoreInfo> scoreInfos;
-    public ScoreCreateRequestDto(Student student, String sco_season, String sco_test, String writer, LocalDate  score_date) {
+    public ScoreCreateRequestDto(Student student, String sco_season, String sco_test, String writer, LocalDate score_date) {
         this.student = student;
         this.sco_season = sco_season;
         this.sco_test = sco_test;

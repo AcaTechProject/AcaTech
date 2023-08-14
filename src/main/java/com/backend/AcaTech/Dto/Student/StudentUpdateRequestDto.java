@@ -3,6 +3,7 @@ package com.backend.AcaTech.Dto.Student;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -23,12 +24,12 @@ public class StudentUpdateRequestDto {
     private String st_write;
     private String st_update_write;
 
-    private Date first_date;
+    private LocalDate first_date;
 
-    private Date update_date;
+    private LocalDate update_date;
 
     @Builder
-    public StudentUpdateRequestDto(String name,String gender,String birth,String school,String grade,String etc,String phone, String image, String teacher, String parentPhone, String st_write, String st_update_write) {
+    public StudentUpdateRequestDto(String name,String gender,String birth,String school,String grade,String etc,String phone, String image, String teacher, String parentPhone, String st_write, String st_update_write, LocalDate update_date) {
         this.name = name;
         this.gender = gender;
         this.birth = birth;
@@ -42,6 +43,6 @@ public class StudentUpdateRequestDto {
         this.st_write = st_write;
         this.st_update_write = st_update_write;
         this.first_date = first_date;
-        this.update_date = update_date;
+        this.update_date = LocalDate.now();
     }
 }

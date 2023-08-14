@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -39,7 +40,10 @@ public class StudentService {
                 .image(requestDto.getImage())
                 .teacher(requestDto.getTeacher())
                 .parentPhone(requestDto.getParentPhone())
+                .first_date(requestDto.getFirst_date())
+
                 .st_write(requestDto.getSt_write())
+
                 .st_update_write(requestDto.getSt_update_write())
                 .build();
 
@@ -96,6 +100,7 @@ public class StudentService {
         student.setImage(requestDto.getImage());
         student.setTeacher(requestDto.getTeacher());
         student.setParentPhone(requestDto.getParentPhone());
+        student.setUpdate_date(LocalDate.now());
         student.setSt_write(requestDto.getSt_write());
         student.setSt_update_write(requestDto.getSt_update_write());
 
