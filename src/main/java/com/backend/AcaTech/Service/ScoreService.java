@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,7 @@ public class ScoreService {
                 .sco_season(requestDto.getSco_season())
                 .sco_test(requestDto.getSco_test())
                 .writer(requestDto.getWriter())
+                .score_date(requestDto.getScore_date())
                 .build();
 
         StudentScore savedStudentScore = studentScroeRepository.save(studentScore);

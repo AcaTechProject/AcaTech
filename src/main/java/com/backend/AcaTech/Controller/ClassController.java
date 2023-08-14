@@ -3,6 +3,7 @@ package com.backend.AcaTech.Controller;
 import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
 import com.backend.AcaTech.Service.ClassService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @RestController
 public class ClassController {
 
+    @Autowired
     private final ClassService classService;
 
 //    @GetMapping("/user/class/{id}")

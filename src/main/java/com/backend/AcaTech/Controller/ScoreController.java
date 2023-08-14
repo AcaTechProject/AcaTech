@@ -5,6 +5,7 @@ import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Service.ScoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 public class ScoreController {
 
+    @Autowired
     private final ScoreService scoreService;
 
     // 해당 학생 성적 등록
@@ -26,5 +28,4 @@ public class ScoreController {
     public List<ScoreListResponseDto> getStudentGrades(@PathVariable Long studentId) {
         return scoreService.getStudentGrades(studentId);
     }
-
 }
