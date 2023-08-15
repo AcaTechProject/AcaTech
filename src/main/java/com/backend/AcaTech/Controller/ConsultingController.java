@@ -49,4 +49,7 @@ public class ConsultingController {
 
         return ResponseEntity.ok(consultingResponse);
     }
+
+    @DeleteMapping("/student/consulting/{id}")
+    public void deleteStudent(@PathVariable Long id) {consultingService.delete(id);}
 }

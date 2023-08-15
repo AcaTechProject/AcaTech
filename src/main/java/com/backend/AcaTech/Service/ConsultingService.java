@@ -63,12 +63,23 @@ public class ConsultingService {
                 .collect(Collectors.toList());
     }
 
+    //상세 조회
     @Transactional
     public ConsultingResponseDto getConsultingDetails(Long studentId, Long conId) {
         Consulting consulting = consultingRepository.findByIdAndStudentId(conId, studentId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 학생의 상담 내용이 존재하지 않습니다."));
 
         return new ConsultingResponseDto(consulting);
+    }
+
+
+    // 삭제제
+   @Transactional
+    public void delete(Long id){
+       Consulting consulting = consultingRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
+
+       consultingRepository.delete(consulting);
     }
 
 }
