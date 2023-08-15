@@ -3,6 +3,7 @@ package com.backend.AcaTech.Controller;
 import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingListResponseDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
+import com.backend.AcaTech.Dto.Consulting.ConsultingUpdateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Service.ConsultingService;
@@ -50,9 +51,17 @@ public class ConsultingController {
         return ResponseEntity.ok(consultingResponse);
     }
 
+    // 다중 삭제
     @DeleteMapping("/student/consulting/delete-multiple")
     public void deleteMultipleConsultings(@RequestBody List<Long> ids) {
         consultingService.deleteMultiple(ids);
     }
+
+    // 수정
+    @PutMapping("/student/consulting/{conId}")
+    public Long update(@PathVariable Long conId, @RequestBody ConsultingUpdateRequestDto requestDto) {
+        return consultingService.update(conId, requestDto);
+    }
+
 
 }

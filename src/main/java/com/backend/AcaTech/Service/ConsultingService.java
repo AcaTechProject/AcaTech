@@ -5,11 +5,16 @@ import com.backend.AcaTech.Domain.Consulting.Consulting;
 import com.backend.AcaTech.Domain.Score.Score;
 import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Domain.Student.StudentClass;
+import com.backend.AcaTech.Domain.Student.StudentFamily;
 import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingListResponseDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
+import com.backend.AcaTech.Dto.Consulting.ConsultingUpdateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
+import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
 import com.backend.AcaTech.Repository.Class.UserRepository;
 import com.backend.AcaTech.Repository.Consulting.ConsultingRepository;
 import com.backend.AcaTech.Repository.Student.StudentRepository;
@@ -19,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,4 +86,17 @@ public class ConsultingService {
         consultingRepository.deleteAll(consultings);
     }
 
+
+
+    @Transactional
+    public Long update(Long id, ConsultingUpdateRequestDto requestDto) {
+        Consulting consulting = consultingRepository.findById(id)
+                .orElseThrow(() -> new
+                        IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        consulting.update(requestDto.getCon_who(),
+                requestDto.getCon_content(), requestDto.getCon_class());
+
+        return id;
+    }
 }

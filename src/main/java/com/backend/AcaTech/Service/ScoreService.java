@@ -68,9 +68,4 @@ public class ScoreService {
                 .map(ScoreListResponseDto::new)
                 .collect(Collectors.toList());
     }
-
-
-
-
-
 }

@@ -60,4 +60,10 @@ public class Consulting {
         this.con_teacher = con_teacher;
     }
 
+    public void update(String con_class, String con_content, String con_who) {
+        this.con_class = con_class;
+        this.con_content = con_content;
+        this.con_who = con_who;
+    }
+
 }
