@@ -1,8 +1,10 @@
 package com.backend.AcaTech.Service;
 
+import com.backend.AcaTech.Domain.Consulting.Consulting;
 import com.backend.AcaTech.Domain.Score.Score;
 import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreResponseDto;
@@ -22,16 +24,23 @@ import java.util.stream.Collectors;
 @Service
 public class ScoreService {
 
-    @Autowired
+
     private final StudentScroeRepository studentScroeRepository;
-    @Autowired
+
     private final ScoreRepository scoreRepository;
-    @Autowired
+
     private  final StudentRepository studentRepository;
 
 
 
+    @Autowired
 
+    public ScoreService(StudentRepository studentRepository, ScoreRepository scoreRepository, StudentScroeRepository studentScroeRepository) {
+        this.studentRepository = studentRepository;
+
+        this.scoreRepository = scoreRepository;
+        this.studentScroeRepository = studentScroeRepository;
+    }
     @Transactional
     public Long create(Long id, ScoreCreateRequestDto requestDto) {
         Student student = studentRepository.findById(id)
@@ -73,4 +82,23 @@ public class ScoreService {
                 .map(ScoreListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    // 점수 상세 조회
+    @Transactional
+    public ScoreResponseDto getScoreDetails(Long studentId, Long scoreId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+        StudentScore studentScore = studentScroeRepository.findByStudentAndId(student, scoreId)
+                .orElseThrow(() -> new EntityNotFoundException("Score not found for student " + studentId + " with id: " + scoreId));
+
+        List<Score> scores = scoreRepository.findByStudentScore(studentScore);
+
+        List<ScoreResponseDto.ScoreInfo> scoreInfos = scores.stream()
+                .map(score -> new ScoreResponseDto.ScoreInfo(score.getClass_name(), score.getClass_score()))
+                .collect(Collectors.toList());
+
+        return new ScoreResponseDto(studentScore, scoreInfos);
+    }
+
 }

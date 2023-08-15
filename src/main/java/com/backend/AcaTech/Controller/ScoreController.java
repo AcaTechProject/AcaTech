@@ -1,5 +1,6 @@
 package com.backend.AcaTech.Controller;
 
+import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreResponseDto;
@@ -32,6 +33,19 @@ public class ScoreController {
     @GetMapping("/student/{studentId}/grade")
     public List<ScoreListResponseDto> getStudentGrades(@PathVariable Long studentId) {
         return scoreService.getStudentGrades(studentId);
+    }
+
+    @GetMapping("/student/{studentId}/grade/{scoreId}")
+    public ResponseEntity<ScoreResponseDto> getConsultingDetail(
+            @PathVariable Long studentId,
+            @PathVariable Long scoreId) {
+        ScoreResponseDto scoreResponseDto = scoreService.getScoreDetails(studentId, scoreId);
+
+        if (scoreResponseDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(scoreResponseDto);
     }
 
 

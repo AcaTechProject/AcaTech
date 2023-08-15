@@ -10,5 +10,7 @@ import java.util.List;
 public interface ScoreRepository extends JpaRepository<Score, Long> {
     List<Score> findAllByOrderByIdDesc();
 
+    List<Score> findByStudentScore(StudentScore studentScore);
+
     //List<StudentScore> findByStudent(Student student);
 }

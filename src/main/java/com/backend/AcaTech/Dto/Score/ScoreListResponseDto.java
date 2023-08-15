@@ -36,6 +36,7 @@ public class ScoreListResponseDto {
                 .map(score -> new ScoreInfo(score.getClass_name(), score.getClass_score()))
                 .collect(Collectors.toList());
         this.scoreInfos = scoreInfoList;
+
     }
 
     @Getter
