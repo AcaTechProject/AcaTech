@@ -7,6 +7,7 @@ import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
@@ -188,6 +189,30 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    // 학생 출석 통계
+    public StudentAttendanceTotalResponseDto getAttendanceStatistics(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+        List<StudentAttendance> attendances = studentAttendanceRepository.findByStudent(student);
+
+        long totalO = attendances.stream().filter(a -> "출석".equals(a.getAtt_result())).count();
+        long totalLate = attendances.stream().filter(a -> "지각".equals(a.getAtt_result())).count();
+        long totalX = attendances.stream().filter(a -> "결석".equals(a.getAtt_result())).count();
+        long totalEtc = attendances.stream().filter(a -> "기타".equals(a.getAtt_result())).count();
+
+        long allAttendance = totalO + totalLate + totalX + totalEtc;
+
+        StudentAttendanceTotalResponseDto responseDto = new StudentAttendanceTotalResponseDto();
+        responseDto.setStudentId(studentId);
+        responseDto.setAllAttendance(allAttendance);
+        responseDto.setTotalO(totalO);
+        responseDto.setTotalLate(totalLate);
+        responseDto.setTotalX(totalX);
+        responseDto.setTotalEtc(totalEtc);
+
+        return responseDto;
+    }
 
 
 }
