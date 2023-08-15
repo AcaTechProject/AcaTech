@@ -12,6 +12,7 @@ import com.backend.AcaTech.Repository.Student.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,11 @@ import java.util.stream.Collectors;
 @Service
 public class ScoreService {
 
+    @Autowired
     private final StudentScroeRepository studentScroeRepository;
+    @Autowired
     private final ScoreRepository scoreRepository;
+    @Autowired
     private  final StudentRepository studentRepository;
 
 
@@ -57,6 +61,7 @@ public class ScoreService {
     }
 
 
+    // 점수 전체 조회
     @Transactional
     public List<ScoreListResponseDto> getStudentGrades(Long studentId) {
         Student student = studentRepository.findById(studentId)

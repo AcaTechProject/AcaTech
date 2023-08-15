@@ -1,30 +1,55 @@
 package com.backend.AcaTech.Service;
 
+import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
+import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
+import com.backend.AcaTech.Repository.Class.UserRepository;
+import com.backend.AcaTech.Repository.Consulting.ConsultingRepository;
+import com.backend.AcaTech.Repository.Student.StudentAttendanceRepository;
 import com.backend.AcaTech.Repository.Student.StudentClassRepository;
 import com.backend.AcaTech.Repository.Student.StudentFamilyRepository;
 import com.backend.AcaTech.Repository.Student.StudentRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StudentService {
 
+
     private final StudentRepository studentRepository;
+
     private final StudentFamilyRepository studentFamilyRepository;
+
 
     private final StudentClassRepository studentClassRepository;
     private Student entity;
+
+    private final StudentAttendanceRepository studentAttendanceRepository;
+
+    @Autowired
+    // 왜썼더라
+    public StudentService(StudentFamilyRepository studentFamilyRepository, StudentClassRepository studentClassRepository, StudentRepository studentRepository, StudentAttendanceRepository studentAttendanceRepository) {
+        this.studentFamilyRepository = studentFamilyRepository;
+        this.studentClassRepository = studentClassRepository;
+        this.studentRepository = studentRepository;
+        this.studentAttendanceRepository = studentAttendanceRepository;
+    }
 
     // 신규 학생 추가
     @Transactional
@@ -149,5 +174,20 @@ public class StudentService {
 
         studentRepository.delete(student);
     }
+
+    // 학생 출석 리스트
+    @Transactional
+    public List<StudentAttendanceListResponseDto> searchAllAttendanceList(Long studentId) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+        List<StudentAttendance> attendances = studentAttendanceRepository.findByStudent(student);
+
+        return attendances.stream()
+                .map(StudentAttendanceListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
 
 }

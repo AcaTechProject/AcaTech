@@ -1,5 +1,7 @@
 package com.backend.AcaTech.Controller;
 
+import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
@@ -8,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,4 +39,10 @@ public class StudentController {
         studentService.updateStudent(id, requestDto);
         return ResponseEntity.ok("학생 정보가 업데이트되었습니다.");
     }
+
+    @GetMapping("/student/{id}/student_attendance")
+    public List<StudentAttendanceListResponseDto> getStudentAttendance(@PathVariable Long id) {
+        return studentService.searchAllAttendanceList(id);
+    }
+
 }
