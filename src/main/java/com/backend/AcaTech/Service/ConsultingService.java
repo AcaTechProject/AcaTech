@@ -7,6 +7,7 @@ import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingListResponseDto;
+import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Repository.Class.UserRepository;
@@ -60,6 +61,14 @@ public class ConsultingService {
         return consulting.stream()
                 .map(ConsultingListResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ConsultingResponseDto getConsultingDetails(Long studentId, Long conId) {
+        Consulting consulting = consultingRepository.findByIdAndStudentId(conId, studentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 학생의 상담 내용이 존재하지 않습니다."));
+
+        return new ConsultingResponseDto(consulting);
     }
 
 }
