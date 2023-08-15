@@ -1,13 +1,14 @@
 package com.backend.AcaTech.Controller;
 
 import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
+import com.backend.AcaTech.Dto.Consulting.ConsultingListResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
+import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Service.ConsultingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,8 +16,15 @@ public class ConsultingController {
 
     private final ConsultingService consultingService;
 
+    // 해당 학생 상담 등록
     @PostMapping("/student/{id}/consulting")
     public Long create(@PathVariable Long id, @RequestBody ConsultingCreateRequestDto requestDto) {
         return consultingService.create(id, requestDto);
+    }
+
+    // 해당 학생 상담 전체 조회
+    @GetMapping("/student/{studentId}/consulting")
+    public List<ConsultingListResponseDto> getConsultingList(@PathVariable Long studentId) {
+        return consultingService.getConsultingList(studentId);
     }
 }

@@ -6,7 +6,9 @@ import com.backend.AcaTech.Domain.Score.Score;
 import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
+import com.backend.AcaTech.Dto.Consulting.ConsultingListResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
+import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Repository.Class.UserRepository;
 import com.backend.AcaTech.Repository.Consulting.ConsultingRepository;
 import com.backend.AcaTech.Repository.Student.StudentRepository;
@@ -15,6 +17,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -25,6 +30,7 @@ public class ConsultingService {
     private final StudentRepository studentRepository;
 
     @Autowired
+    // 왜썼더라
     public ConsultingService(ConsultingRepository consultingRepository, UserRepository userRepository, StudentRepository studentRepository) {
         this.consultingRepository = consultingRepository;
         this.userRepository = userRepository;
@@ -43,4 +49,17 @@ public class ConsultingService {
 
         return consultingRepository.save(consulting).getId();
     }
+
+    @Transactional
+    public List<ConsultingListResponseDto> getConsultingList(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+        List<Consulting> consulting = consultingRepository.findByStudent(student);
+
+        return consulting.stream()
+                .map(ConsultingListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
 }
