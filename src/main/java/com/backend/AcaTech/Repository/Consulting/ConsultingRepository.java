@@ -16,4 +16,6 @@ public interface ConsultingRepository extends JpaRepository<Consulting, Integer>
     Optional<Consulting> findByIdAndStudentId(Long conId, Long studentId);
 
     Optional<Consulting> findById(Long id);
+
+    List<Consulting> findByIdIn(List<Long> ids);
 }

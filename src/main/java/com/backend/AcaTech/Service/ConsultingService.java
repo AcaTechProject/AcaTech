@@ -74,12 +74,10 @@ public class ConsultingService {
 
 
     // 삭제제
-   @Transactional
-    public void delete(Long id){
-       Consulting consulting = consultingRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
-
-       consultingRepository.delete(consulting);
+    @Transactional
+    public void deleteMultiple(List<Long> ids) {
+        List<Consulting> consultings = consultingRepository.findByIdIn(ids);
+        consultingRepository.deleteAll(consultings);
     }
 
 }

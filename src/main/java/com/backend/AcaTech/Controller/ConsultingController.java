@@ -50,6 +50,9 @@ public class ConsultingController {
         return ResponseEntity.ok(consultingResponse);
     }
 
-    @DeleteMapping("/student/consulting/{id}")
-    public void deleteStudent(@PathVariable Long id) {consultingService.delete(id);}
+    @DeleteMapping("/student/consulting/delete-multiple")
+    public void deleteMultipleConsultings(@RequestBody List<Long> ids) {
+        consultingService.deleteMultiple(ids);
+    }
+
 }
