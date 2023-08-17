@@ -9,6 +9,7 @@ import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
+import com.backend.AcaTech.Dto.Student.StudentMessageResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
 import com.backend.AcaTech.Repository.Class.UserRepository;
@@ -213,6 +214,9 @@ public class StudentService {
 
         return responseDto;
     }
+
+
+    // 학생별 메시지 전송(테스트,,)
 
 
 }
