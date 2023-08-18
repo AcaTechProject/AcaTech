@@ -31,7 +31,7 @@ public class newConsultingController {
 
     //새로운 상담내용 조회
 
-    @GetMapping(value="/newconsulting")
+    @GetMapping(value="/newconsulting/{id}")
     public List<newConsultingDto> searchById(@PathVariable Long id) {
         return newConsultingService.searchById(id);
     }
