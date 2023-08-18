@@ -18,10 +18,7 @@ public class ClassController {
     @Autowired
     private final ClassService classService;
 
-//    @GetMapping("/user/class/{id}")
-//    public ClassListResponseDto searchById(@PathVariable Long id) {
-//        return classService.searchById(id);
-//    }
+
 
     @GetMapping("/user/class/{id}")
     public List<ClassListResponseDto> searchById(@PathVariable Long id) {
