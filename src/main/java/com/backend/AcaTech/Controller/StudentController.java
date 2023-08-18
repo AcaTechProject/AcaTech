@@ -4,6 +4,7 @@ import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
+import com.backend.AcaTech.Dto.Student.StudentMessageResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
 import com.backend.AcaTech.Service.StudentService;
@@ -56,4 +57,10 @@ public class StudentController {
         return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 
+
+    // 학생 개별 메시지
+    @GetMapping("/student/{id}/message_info")
+    public StudentMessageResponseDto studentMessage(@PathVariable Long id) {
+        return studentService.studentMessage(id);
+    }
 }

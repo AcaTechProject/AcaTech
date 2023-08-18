@@ -6,16 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
 @Setter
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", unique = true, nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long id;
 
     @Column(name = "user_name", nullable = false)
@@ -25,7 +25,7 @@ public class User {
     private String email;
 
     @Column(name = "user_pwd", nullable = false)
-    private String password;
+    private String pwd;
 
     @Column(name = "user_phone", nullable = false)
     private String phone;
@@ -42,17 +42,23 @@ public class User {
     @Column(name = "user_image")
     private String image;
 
+    @Column(name = "auth_key")
+    private String authKey;
+
+    @Column(name = "auth_status")
+    private Integer authStatus;
+
+
 
     @Builder
-    public User(String name, String email, String password, String phone, String major, String code, String grade, String image, String userClass) {
+    public User(String name, String email, String pwd, String phone, String major, String code, String grade, String image, String userClass) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.pwd = pwd;
         this.phone = phone;
         this.major = major;
         this.code = code;
         this.grade = grade;
         this.image = image;
     }
-    // 생성자, Getter, Setter, 기타 메서드 생략
 }

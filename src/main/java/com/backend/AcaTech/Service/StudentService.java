@@ -216,7 +216,14 @@ public class StudentService {
     }
 
 
-    // 학생별 메시지 전송(테스트,,)
 
+    // 학생별 메시지
+    @Transactional
+    public StudentMessageResponseDto studentMessage(Long id) {
+        Student student = studentRepository.findById(id).
+                orElseThrow(()->new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
+
+        return new StudentMessageResponseDto(student);
+    }
 
 }
