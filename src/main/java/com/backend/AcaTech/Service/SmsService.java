@@ -1,6 +1,6 @@
 package com.backend.AcaTech.Service;
 
-import com.backend.AcaTech.Dto.Message.MessagesDto;
+import com.backend.AcaTech.Dto.MessageTo.MessagesDto;
 import com.backend.AcaTech.Dto.Sms.SmsRequest;
 import com.backend.AcaTech.Dto.Sms.SmsResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;

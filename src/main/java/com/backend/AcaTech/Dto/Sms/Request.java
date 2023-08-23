@@ -9,6 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
+
+// 수신 정보
 public class Request {
     private String recipientPhoneNumber;
     private String title;

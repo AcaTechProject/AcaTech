@@ -1,6 +1,6 @@
 package com.backend.AcaTech.Dto.Sms;
 
-import com.backend.AcaTech.Dto.Message.MessagesDto;
+import com.backend.AcaTech.Dto.MessageTo.MessagesDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

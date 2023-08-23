@@ -1,6 +1,6 @@
 package com.backend.AcaTech.Repository.MessageText;
 
-import com.backend.AcaTech.Domain.MessageText.MessageText;
+import com.backend.AcaTech.Domain.Message.MessageText;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
