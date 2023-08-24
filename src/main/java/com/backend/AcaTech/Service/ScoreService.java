@@ -6,6 +6,7 @@ import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
+import com.backend.AcaTech.Dto.Score.ScoreGraphListResponseDto1;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreResponseDto;
 import com.backend.AcaTech.Repository.Score.ScoreRepository;
@@ -99,6 +100,21 @@ public class ScoreService {
                 .collect(Collectors.toList());
 
         return new ScoreResponseDto(studentScore, scoreInfos);
+    }
+
+
+
+    // 성적 그래프1
+    @Transactional
+    public List<ScoreGraphListResponseDto1> getStudentGradeGraph(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+        List<StudentScore> scores = studentScroeRepository.findByStudent(student);
+
+        return scores.stream()
+                .map(ScoreGraphListResponseDto1::new)
+                .collect(Collectors.toList());
     }
 
 }
