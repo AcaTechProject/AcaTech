@@ -1,19 +1,13 @@
 package com.backend.AcaTech.Service;
 
-import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
+import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
-import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
-import com.backend.AcaTech.Dto.Student.StudentMessageResponseDto;
-import com.backend.AcaTech.Dto.Student.StudentResponseDto;
-import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
-import com.backend.AcaTech.Repository.Class.UserRepository;
-import com.backend.AcaTech.Repository.Consulting.ConsultingRepository;
 import com.backend.AcaTech.Repository.Student.StudentAttendanceRepository;
 import com.backend.AcaTech.Repository.Student.StudentClassRepository;
 import com.backend.AcaTech.Repository.Student.StudentFamilyRepository;
@@ -44,6 +38,7 @@ public class StudentService {
 
     private final StudentAttendanceRepository studentAttendanceRepository;
 
+
     @Autowired
     // 왜썼더라
     public StudentService(StudentFamilyRepository studentFamilyRepository, StudentClassRepository studentClassRepository, StudentRepository studentRepository, StudentAttendanceRepository studentAttendanceRepository) {
@@ -51,6 +46,7 @@ public class StudentService {
         this.studentClassRepository = studentClassRepository;
         this.studentRepository = studentRepository;
         this.studentAttendanceRepository = studentAttendanceRepository;
+
     }
 
     // 신규 학생 추가
@@ -225,5 +221,17 @@ public class StudentService {
 
         return new StudentMessageResponseDto(student);
     }
+
+
+    // 학생 전체 리스트 조회
+    @Transactional
+    public List<StudentListResponseDto> studentList() {
+        return studentRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
+                .map(StudentListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+
 
 }

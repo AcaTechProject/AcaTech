@@ -1,12 +1,9 @@
 package com.backend.AcaTech.Controller;
 
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
+import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
-import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
-import com.backend.AcaTech.Dto.Student.StudentMessageResponseDto;
-import com.backend.AcaTech.Dto.Student.StudentResponseDto;
-import com.backend.AcaTech.Dto.Student.StudentUpdateRequestDto;
 import com.backend.AcaTech.Service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +59,12 @@ public class StudentController {
     @GetMapping("/student/{id}/message_info")
     public StudentMessageResponseDto studentMessage(@PathVariable Long id) {
         return studentService.studentMessage(id);
+    }
+
+
+    // 학생 리스트 전체 조회
+    @GetMapping("/student/all")
+    public List<StudentListResponseDto> searchAllDesc() {
+        return studentService.studentList();
     }
 }
