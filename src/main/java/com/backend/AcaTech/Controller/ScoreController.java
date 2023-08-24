@@ -1,10 +1,7 @@
 package com.backend.AcaTech.Controller;
 
 import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
-import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
-import com.backend.AcaTech.Dto.Score.ScoreGraphListResponseDto1;
-import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
-import com.backend.AcaTech.Dto.Score.ScoreResponseDto;
+import com.backend.AcaTech.Dto.Score.*;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
 import com.backend.AcaTech.Service.ScoreService;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +50,14 @@ public class ScoreController {
 
     // 성적 그래프 1
     @GetMapping("/student/{studentId}/grade/graph1")
-    public List<ScoreGraphListResponseDto1> getStudentGradeGraph(@PathVariable Long studentId) {
-        return scoreService.getStudentGradeGraph(studentId);
+    public List<ScoreGraphListResponseDto1> getStudentGradeGraph1(@PathVariable Long studentId) {
+        return scoreService.getStudentGradeGraph1(studentId);
+    }
+
+    // 성적 그래프 2
+    @GetMapping("/student/{studentId}/grade/graph2")
+    public List<ScoreGraphListResponseDto2> getStudentGradeGraph2(@PathVariable Long studentId) {
+        return scoreService.getStudentGradeGraph2(studentId);
     }
 
 }
