@@ -23,12 +23,12 @@ public class StudentClass {
     private Student student;
 
     @Column(nullable = false)
-    private String class_name;
+    private String className;
 
 
     @Builder
     public StudentClass(Student student,  String class_name) {
         this.student = student;
-        this.class_name = class_name;
+        this.className = class_name;
     }
 }

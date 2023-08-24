@@ -1,14 +1,11 @@
 package com.backend.AcaTech.Dto.Student;
 
 
-import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
-import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +23,7 @@ public class StudentListResponseDto {
         this.school = entity.getSchool();
 
         List<ClassInfo> classInfoList = entity.getClasses().stream()
-                .map(studentClass -> new ClassInfo(studentClass.getClass_name()))
+                .map(studentClass -> new ClassInfo(studentClass.getClassName()))
                 .collect(Collectors.toList());
         this.classInfos = classInfoList;
 

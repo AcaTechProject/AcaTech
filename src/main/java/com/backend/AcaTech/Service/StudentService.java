@@ -232,6 +232,42 @@ public class StudentService {
     }
 
 
+    // 해당 수업 듣는 학생만
+    @Transactional
+    public List<StudentListResponseDto> findByClassId(Long classId) {
+        StudentClass studentClass = studentClassRepository.findById(classId)
+                .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
 
+        List<Student> studentsInClass = studentRepository.findByClasses(studentClass);
+
+        return studentsInClass.stream()
+                .map(StudentListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    // 이름으로 검색해보기기
+
+   @Transactional
+    public List<StudentListResponseDto> findByName(Long classId) {
+        StudentClass studentClass = studentClassRepository.findById(classId)
+                .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
+
+        String className = studentClass.getClassName();
+
+        List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
+
+        if (studentClasses.isEmpty()) {
+            throw new EntityNotFoundException("Class not found with name: " + className);
+        }
+
+        List<Student> studentsInClass = studentClasses.stream()
+                .flatMap(sClass -> studentRepository.findByClasses(sClass).stream())
+                .collect(Collectors.toList());
+
+        return studentsInClass.stream()
+                .map(StudentListResponseDto::new)
+                .collect(Collectors.toList());
+    }
 
 }

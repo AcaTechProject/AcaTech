@@ -67,4 +67,18 @@ public class StudentController {
     public List<StudentListResponseDto> searchAllDesc() {
         return studentService.studentList();
     }
+
+
+    // 특정 수업을 듣는 학생 리스트 조회
+//    @GetMapping("/student/byClass/{classId}")
+//    public List<StudentListResponseDto> searchByClassId(@PathVariable Long classId) {
+//        return studentService.findByClassId(classId);
+//    }
+
+
+    // 특정 수업을 듣는 학생 리스트 조회 (classId로)
+    @GetMapping("/student/byClass/{classId}")
+    public List<StudentListResponseDto> searchByClassName(@PathVariable Long classId) {
+        return studentService.findByName(classId);
+    }
 }
