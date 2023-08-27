@@ -1,4 +1,4 @@
-package com.backend.AcaTech.Domain.MessageText;
+package com.backend.AcaTech.Domain.Message;
 
 
 import jakarta.persistence.*;

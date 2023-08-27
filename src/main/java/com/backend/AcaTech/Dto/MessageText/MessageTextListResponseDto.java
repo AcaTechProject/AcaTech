@@ -1,6 +1,6 @@
 package com.backend.AcaTech.Dto.MessageText;
 
-import com.backend.AcaTech.Domain.MessageText.MessageText;
+import com.backend.AcaTech.Domain.Message.MessageText;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

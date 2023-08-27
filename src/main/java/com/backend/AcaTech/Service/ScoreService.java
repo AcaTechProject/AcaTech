@@ -1,13 +1,9 @@
 package com.backend.AcaTech.Service;
 
-import com.backend.AcaTech.Domain.Consulting.Consulting;
 import com.backend.AcaTech.Domain.Score.Score;
 import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
-import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
-import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
-import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
-import com.backend.AcaTech.Dto.Score.ScoreResponseDto;
+import com.backend.AcaTech.Dto.Score.*;
 import com.backend.AcaTech.Repository.Score.ScoreRepository;
 import com.backend.AcaTech.Repository.Score.StudentScroeRepository;
 import com.backend.AcaTech.Repository.Student.StudentRepository;
@@ -17,8 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @RequiredArgsConstructor
 @Service
@@ -100,5 +101,71 @@ public class ScoreService {
 
         return new ScoreResponseDto(studentScore, scoreInfos);
     }
+
+
+
+    // 성적 그래프1
+    @Transactional
+    public List<ScoreGraphListResponseDto1> getStudentGradeGraph1(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+        List<StudentScore> scores = studentScroeRepository.findByStudent(student);
+
+        return scores.stream()
+                .map(ScoreGraphListResponseDto1::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
+    public List<ScoreGraphListResponseDto2> getStudentGradeGraph2(Long studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+        List<StudentScore> scores = studentScroeRepository.findByStudent(student);
+
+        // 학기별로 그룹화
+        Map<String, List<StudentScore>> scoresBySeason = scores.stream()
+                .collect(groupingBy(StudentScore::getSco_season));
+
+        List<ScoreGraphListResponseDto2> result = new ArrayList<>();
+
+        for (Map.Entry<String, List<StudentScore>> entry : scoresBySeason.entrySet()) {
+            String season = entry.getKey();
+            List<StudentScore> seasonScores = entry.getValue();
+
+            Map<String, List<ScoreListResponseDto.ScoreInfo>> scoreInfosByClass = new HashMap<>();
+
+            for (StudentScore score : seasonScores) {
+                for (Score scoreInfo : score.getScoreInfos()) {
+                    String className = scoreInfo.getClass_name();
+                    scoreInfosByClass.computeIfAbsent(className, k -> new ArrayList<>()).add(scoreInfo);
+                }
+            }
+
+            List<ScoreGraphListResponseDto2.ScoreInfo> scoreInfos = new ArrayList<>();
+
+            for (Map.Entry<String, List<ScoreListResponseDto.ScoreInfo>> classEntry : scoreInfosByClass.entrySet()) {
+                String className = classEntry.getKey();
+                List<ScoreListResponseDto.ScoreInfo> classScores = classEntry.getValue();
+
+                // 과목별 평균 계산
+                double averageScore = classScores.stream()
+                        .mapToInt(ScoreListResponseDto.ScoreInfo::getClass_score)
+                        .average()
+                        .orElse(0.0);
+
+                scoreInfos.add(new ScoreGraphListResponseDto2.ScoreInfo(className, (int) averageScore));
+            }
+
+            result.add(new ScoreGraphListResponseDto2(season, scoreInfos));
+        }
+
+        return result;
+    }
+
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.backend.AcaTech.Domain.Score;
 
 import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "score")
-public class Score {
+public class Score extends ScoreListResponseDto.ScoreInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -33,6 +33,7 @@ dependencies {
 	// org.springframework의 spring-context-support 의존성
 	implementation group: 'org.springframework', name: 'spring-context-support', version: '5.2.0.RELEASE'
 	implementation 'org.springframework.security:spring-security-crypto:6.0.2'
+	implementation 'org.apache.httpcomponents.client5:httpclient5'
 
 }
 

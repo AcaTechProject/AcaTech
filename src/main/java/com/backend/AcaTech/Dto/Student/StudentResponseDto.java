@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +56,7 @@ public class StudentResponseDto {
         this.familyInfos = familyInfoList;
 
         List<ClassInfo> classInfoList = classInfos.stream()
-                .map(studentClass -> new ClassInfo(studentClass.getClass_name()))
+                .map(studentClass -> new ClassInfo(studentClass.getClassName()))
                 .collect(Collectors.toList());
         this.classInfos = classInfoList;
     }
