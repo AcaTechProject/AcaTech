@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class newConsultingDto {
+public class NewConsultingDto {
 
     private Long id;
     private String st_name;
@@ -19,7 +19,7 @@ public class newConsultingDto {
     private String st_class;
     private String st_content;
 
-    public newConsultingDto(NewStudent entity){
+    public NewConsultingDto(NewStudent entity){
         this.st_name = entity.getNew_name();
         this.st_gender = entity.getNew_gender();
         this.st_birth = entity.getNew_birth();

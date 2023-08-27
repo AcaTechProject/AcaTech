@@ -1,6 +1,6 @@
 package com.backend.AcaTech.Controller;
 
-import com.backend.AcaTech.Dto.NewConsultingDto.newConsultingDto;
+import com.backend.AcaTech.Dto.NewConsultingDto.NewConsultingDto;
 import com.backend.AcaTech.Service.NewConsultingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+//@RequiredArgsConstructor
 //@RequiredArgsConstructor
 @RestController
 public class NewConsultingController {
@@ -22,18 +23,25 @@ public class NewConsultingController {
     * */
 
     @Autowired
-    private NewConsultingService newConsultingService;
+    private final NewConsultingService newConsultingService;
 
-    public NewConsultingController(NewConsultingService service) {
-        this.newConsultingService = service;
+    public NewConsultingController(NewConsultingService newConsultingService) {
+        this.newConsultingService = newConsultingService;
     }
 
-    //새로운 상담내용 상세 조회
+
+    // 전체 목록 조회
+    @GetMapping("/newconsulting")
+    public List<NewConsultingDto> getAllConsultings() {
+        return newConsultingService.getAllConsultings();
+    }
+
+
+    //새로운 상담내용 조회
     @GetMapping(value = "/newconsulting/{id}")
-    public List<newConsultingDto> searchById(@PathVariable Long id) {
+    public List<NewConsultingDto> searchById(@PathVariable Long id) {
         return newConsultingService.searchById(id);
     }
+
+
 }
-
-
-
