@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
 @Setter
 @Table(name = "new_consulting")
 @NoArgsConstructor
-public class newStudent {
+public class NewStudent {
 
     @jakarta.persistence.Id
     @Id
@@ -51,7 +51,7 @@ public class newStudent {
     private String new_etc;
 
     @Builder
-    public newStudent(String new_name, String new_gender, String new_birth, String new_school, String new_grade, String new_phone, String new_pa_phone, String new_class, String new_content,String new_etc) {
+    public NewStudent(String new_name, String new_gender, String new_birth, String new_school, String new_grade, String new_phone, String new_pa_phone, String new_class, String new_content, String new_etc) {
         this.new_name = new_name;
         this.new_gender = new_gender;
         this.new_birth = new_birth;
@@ -65,7 +65,7 @@ public class newStudent {
     }
 
     @Builder
-    public newStudent(String new_name, String new_school, String new_class) {
+    public NewStudent(String new_name, String new_school, String new_class) {
         this.new_name = new_name;
         this.new_school = new_school;
         this.new_class = new_class;

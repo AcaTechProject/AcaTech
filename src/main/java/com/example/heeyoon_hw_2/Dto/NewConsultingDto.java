@@ -1,13 +1,13 @@
 package com.example.heeyoon_hw_2.Dto;
 
 
-import com.example.heeyoon_hw_2.Domain.newStudent;
+import com.example.heeyoon_hw_2.Domain.NewStudent;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class newConsultingDto {
+public class NewConsultingDto {
 
     private Long id;
     private String st_name;
@@ -20,7 +20,8 @@ public class newConsultingDto {
     private String st_class;
     private String st_content;
 
-    public newConsultingDto(newStudent entity){
+    public NewConsultingDto(NewStudent entity){
+        this.id = entity.getId();
         this.st_name = entity.getNew_name();
         this.st_gender = entity.getNew_gender();
         this.st_birth = entity.getNew_birth();
