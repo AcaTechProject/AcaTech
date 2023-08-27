@@ -1,8 +1,6 @@
 package com.backend.AcaTech.Domain.Class;
 
 
-import com.backend.AcaTech.Domain.Class.ClassName;
-import com.backend.AcaTech.Domain.Class.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,12 +23,12 @@ public class UserClass {
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = ClassName.class)
+    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = CourseInfo.class)
     @JoinColumn(name = "class_id", updatable = false)
-    private ClassName className;
+    private CourseInfo className;
 
     @Builder
-    public UserClass(User user,  ClassName className) {
+    public UserClass(User user,  CourseInfo className) {
         this.user = user;
         this.className = className;
     }

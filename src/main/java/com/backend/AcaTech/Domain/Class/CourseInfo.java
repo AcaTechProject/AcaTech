@@ -10,9 +10,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "class")
+@Table(name = "course")
 @Setter
-public class ClassName {
+public class CourseInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class ClassName {
     private String class_name;
 
     @Builder
-    public ClassName(String class_name) {
+    public CourseInfo(String class_name) {
         this.class_name = class_name;
     }
 
