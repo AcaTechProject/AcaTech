@@ -19,6 +19,7 @@ public class NewConsultingService {
     public NewStudent entity;
 
 
+    //신규 상담 조회
     @Transactional
     public List<NewConsultingDto> getAllConsultings() {
         return NewConsultingRepository.findAll().stream()
@@ -34,6 +35,26 @@ public class NewConsultingService {
 
     }
 
+    // 신규 상담 등록
+    @Transactional
+    public Long createConsulting(NewConsultingDto newConsultingDto) {
+        NewStudent newStudent = new NewStudent();
+        newStudent.setNew_name(newConsultingDto.getSt_name());
+        newStudent.setNew_gender(newConsultingDto.getSt_gender());
+        newStudent.setNew_birth(newConsultingDto.getSt_birth());
+        newStudent.setNew_school(newConsultingDto.getSt_school());
+        newStudent.setNew_grade(newConsultingDto.getSt_grade());
+        newStudent.setNew_phone(newConsultingDto.getSt_phone());
+        newStudent.setNew_pa_phone(newConsultingDto.getSt_pa_phone());
+        newStudent.setNew_class(newConsultingDto.getSt_class());
+        newStudent.setNew_content(newConsultingDto.getSt_content());
+        newStudent.setNew_etc(newConsultingDto.getSt_etc());
 
-
+        NewConsultingRepository.save(newStudent);
+        return newStudent.getId();
+    }
 }
+
+
+
+

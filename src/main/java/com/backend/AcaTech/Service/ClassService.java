@@ -41,6 +41,7 @@ public class ClassService {
     }
 
 
+    // classId로 출결 과목 조회
     @Transactional
     public ClassDetailResponseDto getClassDetailsByClassId(Long classId) {
         // UserClassRepository를 사용해 해당 classId로 UserClass를 찾습니다.
@@ -59,6 +60,8 @@ public class ClassService {
         return className;  // 공백이 없는 경우 전체 문자열 반환
     }
 
+
+    // 출결 등록
 
 
 

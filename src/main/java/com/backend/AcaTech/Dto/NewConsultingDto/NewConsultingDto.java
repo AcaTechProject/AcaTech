@@ -18,7 +18,11 @@ public class NewConsultingDto {
     private String st_pa_phone;
     private String st_class;
     private String st_content;
+    private String st_etc;
 
+    public NewConsultingDto() {
+        // 기본 생성자
+    }
     public NewConsultingDto(NewStudent entity){
         this.id = entity.getId();
         this.st_name = entity.getNew_name();
@@ -30,7 +34,15 @@ public class NewConsultingDto {
         this.st_pa_phone = entity.getNew_pa_phone();
         this.st_class = entity.getNew_class();
         this.st_content = entity.getNew_content();
+        this.st_etc = entity.getNew_etc();
 
 
     }
+
+
+
+
+
+
+
 }
