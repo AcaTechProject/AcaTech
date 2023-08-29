@@ -1,4 +1,4 @@
-package com.backend.AcaTech.Repository.newConsulting;
+package com.backend.AcaTech.Repository.NewConsulting;
 
 import com.backend.AcaTech.Domain.Consulting.NewStudent;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -14,7 +14,6 @@ import lombok.Setter;
 public class NewStudent {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "new_id", unique = true, nullable = true)
     @Column(name = "id", unique = true, nullable = true)
@@ -52,7 +51,8 @@ public class NewStudent {
     private String new_etc;
 
     @Builder
-    public NewStudent(String new_name, String new_gender, String new_birth, String new_school, String new_grade, String new_phone, String new_pa_phone, String new_class, String new_content, String new_etc) {
+    public NewStudent(Long id, String new_name, String new_gender, String new_birth, String new_school, String new_grade, String new_phone, String new_pa_phone, String new_class, String new_content, String new_etc) {
+        this.id = id;
         this.new_name = new_name;
         this.new_gender = new_gender;
         this.new_birth = new_birth;

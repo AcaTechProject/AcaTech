@@ -20,6 +20,7 @@ public class NewConsultingDto {
     private String st_content;
 
     public NewConsultingDto(NewStudent entity){
+        this.id = entity.getId();
         this.st_name = entity.getNew_name();
         this.st_gender = entity.getNew_gender();
         this.st_birth = entity.getNew_birth();

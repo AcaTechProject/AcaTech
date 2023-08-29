@@ -1,5 +1,6 @@
 package com.backend.AcaTech.Controller;
 
+import com.backend.AcaTech.Dto.Class.ClassDetailResponseDto;
 import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
 import com.backend.AcaTech.Service.ClassService;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +31,12 @@ public class ClassController {
                 .filter(classDto -> classDto.getUser().equals(id))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/user/{classId}")
+    public ClassDetailResponseDto getClassDetailsByClassId(@PathVariable Long classId) {
+        return classService.getClassDetailsByClassId(classId);
+    }
+
+
+
 }

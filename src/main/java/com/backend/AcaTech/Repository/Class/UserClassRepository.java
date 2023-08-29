@@ -1,5 +1,6 @@
 package com.backend.AcaTech.Repository.Class;
 
+import com.backend.AcaTech.Domain.Class.CourseInfo;
 import com.backend.AcaTech.Domain.Class.UserClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 
