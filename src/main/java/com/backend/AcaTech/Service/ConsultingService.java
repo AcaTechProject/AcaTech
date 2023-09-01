@@ -79,7 +79,7 @@ public class ConsultingService {
     }
 
 
-    // 삭제제
+    // 삭제
     @Transactional
     public void deleteMultiple(List<Long> ids) {
         List<Consulting> consultings = consultingRepository.findByIdIn(ids);

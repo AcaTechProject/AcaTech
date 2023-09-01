@@ -45,4 +45,10 @@ public class SmsController {
         return messages;
     }
 
+    // 메시지 다중 삭제
+    @DeleteMapping("/message/delete-multiple")
+    public void deleteMultipleMessage(@RequestBody List<Long> ids) {
+        messageService.deleteMultiple(ids);
+    }
+
 }
