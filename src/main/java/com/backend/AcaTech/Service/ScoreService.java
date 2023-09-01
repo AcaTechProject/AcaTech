@@ -103,7 +103,6 @@ public class ScoreService {
     }
 
 
-
     // 성적 그래프1
     @Transactional
     public List<ScoreGraphListResponseDto1> getStudentGradeGraph1(Long studentId) {

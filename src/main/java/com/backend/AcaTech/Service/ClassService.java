@@ -57,6 +57,7 @@ public class ClassService {
 ////        return new ClassListResponseDto(userClass);
 ////    }
 
+    // 해당 유저 담당 수업 조회
     @Transactional
     public List<ClassListResponseDto> searchById(Long id) {
         return userClassRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()

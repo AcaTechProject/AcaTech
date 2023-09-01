@@ -4,11 +4,9 @@ import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
-import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
-import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
+
 import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
-import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
 import com.backend.AcaTech.Repository.Student.StudentAttendanceRepository;
 import com.backend.AcaTech.Repository.Student.StudentClassRepository;
@@ -22,26 +20,21 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StudentService {
 
-
     private final StudentRepository studentRepository;
 
     private final StudentFamilyRepository studentFamilyRepository;
-
 
     private final StudentClassRepository studentClassRepository;
     private Student entity;
 
     private final StudentAttendanceRepository studentAttendanceRepository;
-
-
-
 
     @Autowired
     // 왜썼더라
@@ -52,7 +45,6 @@ public class StudentService {
         this.studentAttendanceRepository = studentAttendanceRepository;
 
     }
-
 
     // 신규 학생 추가
     @Transactional
@@ -97,7 +89,6 @@ public class StudentService {
                 studentClassRepository.save(studentClass);
             }
         }
-
         return savedStudent.getId();
     }
 
@@ -168,7 +159,6 @@ public class StudentService {
     }
 
 
-
     // 학생 정보 삭제
     @Transactional
     public void delete(Long id){
@@ -217,7 +207,6 @@ public class StudentService {
     }
 
 
-
     // 학생별 메시지
     @Transactional
     public StudentMessageResponseDto studentMessage(Long id) {
@@ -245,7 +234,6 @@ public class StudentService {
 
         List<Student> studentsInClass = studentRepository.findByClasses(studentClass);
 
-
         return studentsInClass.stream()
                 .map(StudentListResponseDto::new)
                 .collect(Collectors.toList());
@@ -253,17 +241,14 @@ public class StudentService {
 
 
     // 이름으로 검색해보기기
-    // 0901
-    // class_id받아서 이름으로 검색
+
    @Transactional
     public List<StudentListResponseDto> findByName(Long classId) {
         StudentClass studentClass = studentClassRepository.findById(classId)
                 .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
 
-        //국어A 김민지
         String className = studentClass.getClassName();
 
-        //국어A 김민지로 찾은 list
         List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
 
         if (studentClasses.isEmpty()) {
@@ -279,39 +264,4 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
-
-    // 그날 출결 정보 등록
-    public void createStudentAttendance(Long classId, Long stId, String attO, String attLate, String attX, String attEtc, String attReason, LocalDate attDate, String attResult) {
-
-        Optional<Student> studentOptional = studentRepository.findById(stId);
-        Optional<StudentClass> studentClassOptional = studentClassRepository.findById(classId);
-
-        if (studentOptional.isPresent() && studentClassOptional.isPresent()) {
-            Student student = studentOptional.get();
-            StudentClass studentClass = studentClassOptional.get();
-
-            StudentAttendance studentAttendance = StudentAttendance.builder()
-                    .att_o(attO)
-                    .att_late(attLate)
-                    .att_x(attX)
-                    .att_etc(attEtc)
-                    .att_reason(attReason)
-                    .att_date(attDate)
-                    .att_result(attResult)
-                    .student(student)
-                    .studentClass(studentClass)
-                    .build();
-
-            studentAttendanceRepository.save(studentAttendance);
-        } else {
-            throw new RuntimeException("Student or Class not found");
-        }
-    }
-
 }
-
-
-
-
-
-
