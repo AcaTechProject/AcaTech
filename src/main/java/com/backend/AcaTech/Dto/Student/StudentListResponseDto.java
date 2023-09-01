@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 public class StudentListResponseDto {
 
     private String name;
+
+    @Setter
     private String className;
 
 //    private String school;
@@ -24,6 +26,7 @@ public class StudentListResponseDto {
         this.id = entity.getId();
         this.name = entity.getName();
         this.parentPhone = entity.getParentPhone();
+
 
         List<ClassInfo> classInfoList = entity.getClasses().stream()
                 .map(studentClass -> new ClassInfo(studentClass.getClassName()))

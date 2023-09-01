@@ -199,9 +199,14 @@ public class ClassService {
                 .map(StudentListResponseDto::new)
                 .collect(Collectors.toList());
 
+        // 여기에서 각 학생의 className을 설정
+        for(StudentListResponseDto studentDto : studentDtos) {
+            studentDto.setClassName(className);
+        }
+
         Map<String, Object> response = new HashMap<>();
         response.put("students", studentDtos);
-        response.put("className", className); // 여기에 수업 이름 추가
+        response.put("className", className);
 
         return response;
     }
