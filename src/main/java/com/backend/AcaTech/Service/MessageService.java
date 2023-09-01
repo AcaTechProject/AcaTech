@@ -49,5 +49,13 @@ public class MessageService {
                 .map(MessageListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    // 메시지 여러개 삭제
+    @Transactional
+    public void deleteMultiple(List<Long> ids) {
+        List<Message> messages = messageRepository.findByIdIn(ids);
+        messageRepository.deleteAll(messages);
+    }
+
 }
 
