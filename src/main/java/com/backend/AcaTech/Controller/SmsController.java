@@ -4,6 +4,7 @@ import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Message.MessageCreateRequestDto;
 import com.backend.AcaTech.Dto.Message.MessageListResponseDto;
 import com.backend.AcaTech.Dto.Sms.Request;
+import com.backend.AcaTech.Dto.Sms.SmsRequest;
 import com.backend.AcaTech.Dto.Sms.SmsResponse;
 import com.backend.AcaTech.Service.MessageService;
 import com.backend.AcaTech.Service.SmsService;
@@ -16,6 +17,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -32,6 +35,20 @@ public class SmsController {
         return ResponseEntity.ok().body(data);
     }
 
+    @PostMapping("/students/message/multi-send")
+    public ResponseEntity<List<SmsResponse>> sendMessagesToStudents(@RequestBody List<Request> requests) {
+        List<SmsResponse> responses = new ArrayList<>();
+        for (Request request : requests) {
+            try {
+                SmsResponse response = smsService.sendSmsMany(Collections.singletonList(request.getRecipientPhoneNumber()), request.getContent());
+                responses.add(response);
+            } catch (Exception e) {
+
+                responses.add(null); // 실패한 경우 null 또는 다른 특정 값으로 표시할 수 있습니다.
+            }
+        }
+        return ResponseEntity.ok().body(responses);
+    }
     // 메시지 저장
     @PostMapping("/student/message/save")
     public Long createBoard(@RequestBody MessageCreateRequestDto requestDto) {

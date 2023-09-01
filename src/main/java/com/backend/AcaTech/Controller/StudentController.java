@@ -81,4 +81,10 @@ public class StudentController {
     public List<StudentListResponseDto> searchByClassName(@PathVariable Long classId) {
         return studentService.findByName(classId);
     }
+
+    // 특정 수업을 듣는 학생 리스트 조회 -> 메시지 부분
+    @GetMapping("/student/byClass/message/{classId}")
+    public List<StudentForMessageListResponseDto> searchByClassNameForMessage(@PathVariable Long classId) {
+        return studentService.findByNameForMessage(classId);
+    }
 }
