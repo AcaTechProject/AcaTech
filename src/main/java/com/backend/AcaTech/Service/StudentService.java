@@ -264,4 +264,27 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    // 메시지 부분 학생 정보
+    @Transactional
+    public List<StudentForMessageListResponseDto> findByNameForMessage(Long classId) {
+        StudentClass studentClass = studentClassRepository.findById(classId)
+                .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
+
+        String className = studentClass.getClassName();
+
+        List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
+
+        if (studentClasses.isEmpty()) {
+            throw new EntityNotFoundException("Class not found with name: " + className);
+        }
+
+        List<Student> studentsInClass = studentClasses.stream()
+                .flatMap(sClass -> studentRepository.findByClasses(sClass).stream())
+                .collect(Collectors.toList());
+
+        return studentsInClass.stream()
+                .map(StudentForMessageListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
 }

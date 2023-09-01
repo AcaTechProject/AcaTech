@@ -44,6 +44,7 @@ public class SmsService {
     private static final Logger logger = LoggerFactory.getLogger(SmsService.class);
 
 
+    // 메시지 개별 전송
     public SmsResponse sendSms(String recipientPhoneNumber, String content) throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
         Long time = System.currentTimeMillis();
 
@@ -73,6 +74,43 @@ public class SmsService {
 
         return smsResponse;
     }
+
+    // 메시지 다중 전송
+// SmsService.java
+
+    public SmsResponse sendSmsMany(List<String> recipientPhoneNumbers, String content) throws JsonProcessingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, URISyntaxException {
+        Long time = System.currentTimeMillis();
+
+        List<MessagesDto> messages = new ArrayList<>();
+
+        for (String recipientPhoneNumber : recipientPhoneNumbers) {
+            // 대시(-)를 제거하여 정제된 전화번호를 얻습니다.
+            String cleanedPhoneNumber = recipientPhoneNumber.replace("-", "");
+            messages.add(new MessagesDto(cleanedPhoneNumber, content));
+        }
+
+        SmsRequest smsRequest = new SmsRequest("SMS", "COMM", "82", "01039583589", "이것은 문자메시지 테스트입니다. 받아라 뿅", messages);
+        logger.info("Recipient Phone Numbers: {}", recipientPhoneNumbers);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonBody = objectMapper.writeValueAsString(smsRequest);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("x-ncp-apigw-timestamp", time.toString());
+        headers.set("x-ncp-iam-access-key", this.accessKey);
+        String sig = makeSignature(time); // 암호화
+        headers.set("x-ncp-apigw-signature-v2", sig);
+
+        HttpEntity<String> body = new HttpEntity<>(jsonBody, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        SmsResponse smsResponse = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/" + this.serviceId + "/messages"), body, SmsResponse.class);
+
+        return smsResponse;
+    }
+
+
     public String makeSignature(Long time) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
 
         String space = " ";
