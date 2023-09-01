@@ -2,6 +2,7 @@ package com.backend.AcaTech.Controller;
 
 import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Message.MessageCreateRequestDto;
+import com.backend.AcaTech.Dto.Message.MessageListResponseDto;
 import com.backend.AcaTech.Dto.Sms.Request;
 import com.backend.AcaTech.Dto.Sms.SmsResponse;
 import com.backend.AcaTech.Service.MessageService;
@@ -9,15 +10,13 @@ import com.backend.AcaTech.Service.SmsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,4 +37,12 @@ public class SmsController {
     public Long createBoard(@RequestBody MessageCreateRequestDto requestDto) {
         return messageService.create(requestDto);
     }
+
+    // 메시시 조회
+    @GetMapping("/message/{userId}")
+    public List<MessageListResponseDto> getMessagesByUserId(@PathVariable Long userId) {
+        List<MessageListResponseDto> messages = messageService.getMessagesByUserId(userId);
+        return messages;
+    }
+
 }
