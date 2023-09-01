@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class MessageListResponseDto {
 
+    private Long id;
     private Long userId;
     private LocalDate mess_date;
     private String mess_address;
@@ -20,6 +21,7 @@ public class MessageListResponseDto {
     private String mess_result;
 
     public MessageListResponseDto(Message entity) {
+        this.id = entity.getId();
         this.userId = entity.getUser().getId();
         this.mess_date = entity.getMess_date();
         this.mess_address = entity.getMess_address();
