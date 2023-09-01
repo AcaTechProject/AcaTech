@@ -1,15 +1,24 @@
 package com.backend.AcaTech.Controller;
 
+import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Dto.Class.ClassDetailResponseDto;
 import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
+import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
+import com.backend.AcaTech.Dto.Class.NewClassInfoResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentListResponseDto;
 import com.backend.AcaTech.Service.ClassService;
+import com.backend.AcaTech.Service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -18,6 +27,10 @@ public class ClassController {
 
     @Autowired
     private final ClassService classService;
+
+
+    @Autowired
+    private final StudentService studentService;
 
 
 
@@ -32,10 +45,33 @@ public class ClassController {
                 .collect(Collectors.toList());
     }
 
+
+
+    // 과목별 출결 조회
+//    @GetMapping("/user/{classId}")
+//    public ClassDetailResponseDto getClassDetailsByClassId(@PathVariable Long classId) {
+//        return classService.getClassDetailsByClassId(classId);
+//    }
+//
+
+
+//
+//    @GetMapping("/user/{classId}")
+//    public List<StudentListResponseDto> findStudentsByClassId(@PathVariable Long classId) {
+//        return studentService.findStudentsByClassId(classId);
+//    }
+//
+//
+
+    // 특정 수업을 듣는 학생 리스트 조회 (classId로)
     @GetMapping("/user/{classId}")
-    public ClassDetailResponseDto getClassDetailsByClassId(@PathVariable Long classId) {
-        return classService.getClassDetailsByClassId(classId);
+    public ResponseEntity<Map<String, Object>> getStudentsByClassId(@PathVariable Long classId) {
+        Map<String, Object> students = classService.findByName(classId);
+        return new ResponseEntity<>(students, HttpStatus.OK);
     }
+
+//    @PostMapping("user/{classId}")
+
 
 
 

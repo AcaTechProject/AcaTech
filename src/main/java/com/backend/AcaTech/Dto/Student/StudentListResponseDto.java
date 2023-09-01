@@ -13,21 +13,26 @@ import java.util.stream.Collectors;
 public class StudentListResponseDto {
 
     private String name;
+    private String className;
 
-    private String school;
-
-    private List<ClassInfo> classInfos;
+//    private String school;
+    private String parentPhone;
+    private Long id;
+//    private List<ClassInfo> classInfos;
 
     public StudentListResponseDto(Student entity) {
+        this.id = entity.getId();
         this.name = entity.getName();
-        this.school = entity.getSchool();
+        this.parentPhone = entity.getParentPhone();
 
         List<ClassInfo> classInfoList = entity.getClasses().stream()
                 .map(studentClass -> new ClassInfo(studentClass.getClassName()))
                 .collect(Collectors.toList());
-        this.classInfos = classInfoList;
+//        this.classInfos = classInfoList;
 
     }
+
+
     @Getter
     @Setter
     @NoArgsConstructor

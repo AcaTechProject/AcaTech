@@ -4,6 +4,7 @@ import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
+import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
@@ -20,7 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -240,6 +241,7 @@ public class StudentService {
 
         List<Student> studentsInClass = studentRepository.findByClasses(studentClass);
 
+
         return studentsInClass.stream()
                 .map(StudentListResponseDto::new)
                 .collect(Collectors.toList());
@@ -247,14 +249,17 @@ public class StudentService {
 
 
     // 이름으로 검색해보기기
-
+    // 0901
+    // class_id받아서 이름으로 검색
    @Transactional
     public List<StudentListResponseDto> findByName(Long classId) {
         StudentClass studentClass = studentClassRepository.findById(classId)
                 .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
 
+        //국어A 김민지
         String className = studentClass.getClassName();
 
+        //국어A 김민지로 찾은 list
         List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
 
         if (studentClasses.isEmpty()) {
@@ -269,5 +274,16 @@ public class StudentService {
                 .map(StudentListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+
+
+
+
+
+
+
+
+
+
 
 }
