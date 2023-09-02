@@ -48,8 +48,6 @@ public class User {
     @Column(name = "auth_status")
     private Integer authStatus;
 
-
-
     @Builder
     public User(String name, String email, String pwd, String phone, String major, String code, String grade, String image, String userClass) {
         this.name = name;

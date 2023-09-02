@@ -32,5 +32,4 @@ public class UserClass {
         this.user = user;
         this.className = className;
     }
-
 }
