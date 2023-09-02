@@ -6,6 +6,7 @@ import com.backend.AcaTech.Dto.Class.ClassDetailResponseDto;
 import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
 import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
 import com.backend.AcaTech.Dto.Class.NewClassInfoResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentListResponseDto;
 import com.backend.AcaTech.Service.ClassService;
 import com.backend.AcaTech.Service.StudentService;
@@ -13,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +31,6 @@ public class ClassController {
     private final StudentService studentService;
 
 
-
     @GetMapping("/user/class/{id}")
     public List<ClassListResponseDto> searchById(@PathVariable Long id) {
         List<ClassListResponseDto> classList = classService.searchById(id);
@@ -44,7 +41,6 @@ public class ClassController {
                 .filter(classDto -> classDto.getUser().equals(id))
                 .collect(Collectors.toList());
     }
-
 
 
     // 과목별 출결 조회
@@ -70,9 +66,22 @@ public class ClassController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-//    @PostMapping("user/{classId}")
 
 
 
+
+    @PostMapping("/user/{classId}")
+    public ResponseEntity<?> createAttendance(@PathVariable Long classId, @RequestBody StudentAttendanceRequestDto attendanceRequestDto) {
+        studentService.createStudentAttendance(classId,
+                attendanceRequestDto.getStId(),
+                attendanceRequestDto.getAttO(),
+                attendanceRequestDto.getAttLate(),
+                attendanceRequestDto.getAttX(),
+                attendanceRequestDto.getAttEtc(),
+                attendanceRequestDto.getAttReason(),
+                attendanceRequestDto.getAttDate(),
+                attendanceRequestDto.getAttResult());
+        return ResponseEntity.ok("Attendance created");
+    }
 
 }
