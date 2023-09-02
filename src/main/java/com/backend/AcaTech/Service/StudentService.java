@@ -8,6 +8,7 @@ import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceRequestDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
 import com.backend.AcaTech.Repository.Student.StudentAttendanceRepository;
 import com.backend.AcaTech.Repository.Student.StudentClassRepository;
@@ -40,6 +41,8 @@ public class StudentService {
     private final StudentAttendanceRepository studentAttendanceRepository;
 
 
+
+
     @Autowired
     // 왜썼더라
     public StudentService(StudentFamilyRepository studentFamilyRepository, StudentClassRepository studentClassRepository, StudentRepository studentRepository, StudentAttendanceRepository studentAttendanceRepository) {
@@ -49,6 +52,7 @@ public class StudentService {
         this.studentAttendanceRepository = studentAttendanceRepository;
 
     }
+
 
     // 신규 학생 추가
     @Transactional
@@ -277,13 +281,37 @@ public class StudentService {
 
 
 
+    public void createStudentAttendance(Long classId, Long stId, String attO, String attLate, String attX, String attEtc, String attReason, LocalDate attDate, String attResult) {
 
+        Optional<Student> studentOptional = studentRepository.findById(stId);
+        Optional<StudentClass> studentClassOptional = studentClassRepository.findById(classId);
 
+        if (studentOptional.isPresent() && studentClassOptional.isPresent()) {
+            Student student = studentOptional.get();
+            StudentClass studentClass = studentClassOptional.get();
 
+            StudentAttendance studentAttendance = StudentAttendance.builder()
+                    .att_o(attO)
+                    .att_late(attLate)
+                    .att_x(attX)
+                    .att_etc(attEtc)
+                    .att_reason(attReason)
+                    .att_date(attDate)
+                    .att_result(attResult)
+                    .student(student)
+                    .studentClass(studentClass)
+                    .build();
 
-
-
-
-
+            studentAttendanceRepository.save(studentAttendance);
+        } else {
+            throw new RuntimeException("Student or Class not found");
+        }
+    }
 
 }
+
+
+
+
+
+

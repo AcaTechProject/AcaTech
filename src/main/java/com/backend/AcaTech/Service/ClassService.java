@@ -8,6 +8,7 @@ import com.backend.AcaTech.Dto.Class.ClassDetailResponseDto;
 import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
 import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
 import com.backend.AcaTech.Dto.Class.NewClassInfoResponseDto;
+import com.backend.AcaTech.Dto.Student.StudentListForClassIdDto;
 import com.backend.AcaTech.Dto.Student.StudentListResponseDto;
 import com.backend.AcaTech.Repository.Class.ClassNameRepository;
 import com.backend.AcaTech.Repository.Class.UserClassRepository;
@@ -195,12 +196,12 @@ public class ClassService {
                 .flatMap(sClass -> studentRepository.findByClasses(sClass).stream())
                 .collect(Collectors.toList());
 
-        List<StudentListResponseDto> studentDtos = studentsInClass.stream()
-                .map(StudentListResponseDto::new)
+        List<StudentListForClassIdDto> studentDtos = studentsInClass.stream()
+                .map(StudentListForClassIdDto::new)
                 .collect(Collectors.toList());
 
         // 여기에서 각 학생의 className을 설정
-        for(StudentListResponseDto studentDto : studentDtos) {
+        for(StudentListForClassIdDto studentDto : studentDtos) {
             studentDto.setClassName(className);
         }
 

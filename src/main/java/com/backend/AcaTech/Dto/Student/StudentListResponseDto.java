@@ -14,27 +14,20 @@ public class StudentListResponseDto {
 
     private String name;
 
-    @Setter
-    private String className;
+    private String school;
 
-//    private String school;
-    private String parentPhone;
-    private Long id;
-//    private List<ClassInfo> classInfos;
+    private List<ClassInfo> classInfos;
 
     public StudentListResponseDto(Student entity) {
-        this.id = entity.getId();
         this.name = entity.getName();
-        this.parentPhone = entity.getParentPhone();
-
+        this.school = entity.getSchool();
 
         List<ClassInfo> classInfoList = entity.getClasses().stream()
                 .map(studentClass -> new ClassInfo(studentClass.getClassName()))
                 .collect(Collectors.toList());
-//        this.classInfos = classInfoList;
+        this.classInfos = classInfoList;
 
     }
-
 
     @Getter
     @Setter
