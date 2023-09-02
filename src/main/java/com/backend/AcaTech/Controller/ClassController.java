@@ -20,6 +20,7 @@ public class ClassController {
 
 
 
+
     @GetMapping("/user/class/{id}")
     public List<ClassListResponseDto> searchById(@PathVariable Long id) {
         List<ClassListResponseDto> classList = classService.searchById(id);

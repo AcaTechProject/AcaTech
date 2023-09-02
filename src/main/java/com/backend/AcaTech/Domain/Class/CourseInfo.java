@@ -19,16 +19,11 @@ public class CourseInfo {
     @Column(name = "class_id", unique = true, nullable = false)
     private Long id;
 
-//    @ManyToOne(cascade = CascadeType.MERGE, targetEntity = User.class)
-//    @JoinColumn(name = "user_id", updatable = false)
-//    private User user;
-//
     @Column(name = "class_name", nullable = false)
-    private String class_name;
+    private String className; // 변경된 변수명
 
     @Builder
-    public CourseInfo(String class_name) {
-        this.class_name = class_name;
+    public CourseInfo(String className) {
+        this.className = className;
     }
-
 }

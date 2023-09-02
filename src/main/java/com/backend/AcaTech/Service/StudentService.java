@@ -4,7 +4,7 @@ import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Domain.Student.StudentFamily;
-import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
+
 import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
@@ -27,17 +27,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentService {
 
-
     private final StudentRepository studentRepository;
 
     private final StudentFamilyRepository studentFamilyRepository;
-
 
     private final StudentClassRepository studentClassRepository;
     private Student entity;
 
     private final StudentAttendanceRepository studentAttendanceRepository;
-
 
     @Autowired
     // 왜썼더라
@@ -92,7 +89,6 @@ public class StudentService {
                 studentClassRepository.save(studentClass);
             }
         }
-
         return savedStudent.getId();
     }
 
@@ -163,7 +159,6 @@ public class StudentService {
     }
 
 
-
     // 학생 정보 삭제
     @Transactional
     public void delete(Long id){
@@ -210,7 +205,6 @@ public class StudentService {
 
         return responseDto;
     }
-
 
 
     // 학생별 메시지
@@ -267,6 +261,29 @@ public class StudentService {
 
         return studentsInClass.stream()
                 .map(StudentListResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 메시지 부분 학생 정보
+    @Transactional
+    public List<StudentForMessageListResponseDto> findByNameForMessage(Long classId) {
+        StudentClass studentClass = studentClassRepository.findById(classId)
+                .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
+
+        String className = studentClass.getClassName();
+
+        List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
+
+        if (studentClasses.isEmpty()) {
+            throw new EntityNotFoundException("Class not found with name: " + className);
+        }
+
+        List<Student> studentsInClass = studentClasses.stream()
+                .flatMap(sClass -> studentRepository.findByClasses(sClass).stream())
+                .collect(Collectors.toList());
+
+        return studentsInClass.stream()
+                .map(StudentForMessageListResponseDto::new)
                 .collect(Collectors.toList());
     }
 

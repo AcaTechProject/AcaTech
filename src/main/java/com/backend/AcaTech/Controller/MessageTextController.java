@@ -17,7 +17,7 @@ public class MessageTextController {
     private final MessageTextService messageTextService;
 
 
-    @GetMapping("//student/message_text")
+    @GetMapping("/student/message_text")
     public List<MessageTextListResponseDto> searchAllDesc() {
         return messageTextService.searchAllDesc();
     }

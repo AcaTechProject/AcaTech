@@ -16,7 +16,7 @@ public class ClassListResponseDto {
     public ClassListResponseDto(UserClass entity) {
         this.user = entity.getUser().getId();
         this.user_name = entity.getUser().getName();
-        this.className = entity.getClassName().getClass_name();
+        this.className = entity.getClassName().getClassName();
         this.classId = entity.getClassName().getId();
     }
 
