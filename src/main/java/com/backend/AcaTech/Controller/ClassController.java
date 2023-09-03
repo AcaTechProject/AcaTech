@@ -66,22 +66,21 @@ public class ClassController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-
-
-
-
     @PostMapping("/user/{classId}")
-    public ResponseEntity<?> createAttendance(@PathVariable Long classId, @RequestBody StudentAttendanceRequestDto attendanceRequestDto) {
-        studentService.createStudentAttendance(classId,
-                attendanceRequestDto.getStId(),
-                attendanceRequestDto.getAttO(),
-                attendanceRequestDto.getAttLate(),
-                attendanceRequestDto.getAttX(),
-                attendanceRequestDto.getAttEtc(),
-                attendanceRequestDto.getAttReason(),
-                attendanceRequestDto.getAttDate(),
-                attendanceRequestDto.getAttResult());
-        return ResponseEntity.ok("Attendance created");
+    public ResponseEntity<?> createAttendance(@PathVariable Long classId, @RequestBody List<StudentAttendanceRequestDto> attendanceRequestDtos) {
+        for(StudentAttendanceRequestDto attendanceRequestDto : attendanceRequestDtos) {
+            studentService.createStudentAttendance(classId,
+                    attendanceRequestDto.getStId(),
+                    attendanceRequestDto.getAttO(),
+                    attendanceRequestDto.getAttLate(),
+                    attendanceRequestDto.getAttX(),
+                    attendanceRequestDto.getAttEtc(),
+                    attendanceRequestDto.getAttReason(),
+                    attendanceRequestDto.getAttDate(),
+                    attendanceRequestDto.getAttResult());
+        }
+        return ResponseEntity.ok("Attendances created");
     }
+
 
 }
