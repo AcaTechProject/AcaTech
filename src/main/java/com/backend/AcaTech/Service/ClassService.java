@@ -1,17 +1,13 @@
 package com.backend.AcaTech.Service;
 
-import com.backend.AcaTech.Domain.Class.CourseInfo;
 import com.backend.AcaTech.Domain.Class.UserClass;
 import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import com.backend.AcaTech.Domain.Student.StudentClass;
-import com.backend.AcaTech.Dto.Class.ClassDetailResponseDto;
-import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
-import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
-import com.backend.AcaTech.Dto.Class.NewClassInfoResponseDto;
+import com.backend.AcaTech.Dto.Class.*;
 import com.backend.AcaTech.Dto.Student.StudentListForClassIdDto;
-import com.backend.AcaTech.Dto.Student.StudentListResponseDto;
-import com.backend.AcaTech.Repository.Class.ClassNameRepository;
 import com.backend.AcaTech.Repository.Class.UserClassRepository;
+import com.backend.AcaTech.Repository.Student.StudentAttendanceRepository;
 import com.backend.AcaTech.Repository.Student.StudentClassRepository;
 import com.backend.AcaTech.Repository.Student.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,9 +26,11 @@ import java.util.stream.Collectors;
 public class ClassService {
 
     private final UserClassRepository userClassRepository;
-//    private final ClassNameRepository classNameRepository;
+    //    private final ClassNameRepository classNameRepository;
     public UserClass entity;
 
+    @Autowired
+    private StudentAttendanceRepository studentAttendanceRepository;
 
     private final StudentClassRepository studentClassRepository;
     private Student studentEntity;
@@ -66,10 +65,6 @@ public class ClassService {
     }
 
 
-
-
-
-
     // classId로 출결 과목 조회
     @Transactional
     public ClassDetailResponseDto getClassDetailsByClassId(Long classId) {
@@ -90,7 +85,6 @@ public class ClassService {
     }
 
 
-
 //
 //    @Transactional
 //    public List<StudentListResponseDto> findStudentsByClassId(Long classId) {
@@ -105,7 +99,6 @@ public class ClassService {
 //    }
 
 
-
     @Transactional
     public ClassStudentListResponseDto findClassAndStudents(Long classId) {
         // 해당 ID의 Class 객체를 찾음
@@ -117,6 +110,7 @@ public class ClassService {
 
         return new ClassStudentListResponseDto(studentClass, studentsInClass);
     }
+
 //
 //    @Transactional
 //    public NewClassInfoResponseDto getNewClassInfo(Long classId) {
@@ -158,6 +152,7 @@ public class ClassService {
 //    }
 
 
+    //유효성 검사
     private void validateStudentId(Long studentId) {
         if (studentId == null || studentId <= 0) {
             throw new IllegalArgumentException("Invalid studentId");
@@ -165,9 +160,7 @@ public class ClassService {
     }
 
 
-
-
-
+    //현재 출결내용 조회
     @Transactional
     public Map<String, Object> findByName(Long classId) {
 
@@ -195,7 +188,7 @@ public class ClassService {
                 .collect(Collectors.toList());
 
         // 여기에서 각 학생의 className을 설정
-        for(StudentListForClassIdDto studentDto : studentDtos) {
+        for (StudentListForClassIdDto studentDto : studentDtos) {
             studentDto.setClassName(className);
         }
 
@@ -207,8 +200,64 @@ public class ClassService {
     }
 
 
+    //지난 출결내역 조회
+    public List<PreviousAttendanceDto> getPreviousAttendances(Long classId) {
+        List<StudentAttendance> attendances = studentAttendanceRepository.findByStudentClass_Id(classId);
+        if (attendances.isEmpty()) {
+            throw new EntityNotFoundException("해당 classId에 맞는 수업 조회 불가 : " + classId);
+        }
+
+        Map<String, PreviousAttendanceDto> attendanceSummaryMap = new HashMap<>();
+
+        for (StudentAttendance attendance : attendances) {
+            String date = attendance.getAtt_date().toString();
+            PreviousAttendanceDto dto = attendanceSummaryMap.getOrDefault(date, new PreviousAttendanceDto());
+
+            dto.setDateTime(attendance.getAtt_date());
+            dto.setClassName(attendance.getStudentClass().getClassName());
+
+            // 출결 정보를 문자열로
+            String attendanceInfo = String.format("출석%s 지각%s 결석%s 기타%s",
+                    attendance.getAtt_o(),
+                    attendance.getAtt_late(),
+                    attendance.getAtt_x(),
+                    attendance.getAtt_etc());
+
+            // 기존 정보에 새로운 정보를 누적
+            dto.addAttendanceInfo(attendanceInfo);
+            attendanceSummaryMap.put(date, dto);
+        }
+
+        // Map의 Value를 List로 변환
+        List<PreviousAttendanceDto> sortedList = new ArrayList<>(attendanceSummaryMap.values());
+
+        // List를 dateTime을 기준으로 정렬
+        sortedList.sort(Comparator.comparing(PreviousAttendanceDto::getDateTime).reversed());
+
+        return sortedList;
+    }
 
 
+    // 지난 출결 정보 수정
+    public void updateMultipleAttendances(AttendanceUpdateRequestDto requestDto) {
+        Long classId = requestDto.getClassId();
+        LocalDate attDate = requestDto.getAttDate();
+
+        for (AttendanceUpdateRequestDto.StudentAttendanceDto student : requestDto.getStudents()) {
+            Long studentId = student.getStId();
+
+            StudentAttendance attendance = studentAttendanceRepository.findByConditions(attDate, classId, studentId)
+                    .orElseThrow(() -> new EntityNotFoundException("Attendance not found for classId: " + classId + ", att_date: " + attDate + ", and studentId: " + studentId));
+
+            attendance.setAtt_o(student.getAtt_o());
+            attendance.setAtt_late(student.getAtt_late());
+            attendance.setAtt_x(student.getAtt_x());
+            attendance.setAtt_etc(student.getAtt_etc());
+            attendance.setAtt_reason(student.getAtt_reason());
+
+            studentAttendanceRepository.save(attendance);
+        }
+    }
 
 
 }

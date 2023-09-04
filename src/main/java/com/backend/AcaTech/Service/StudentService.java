@@ -280,7 +280,7 @@ public class StudentService {
     }
 
 
-
+    // 그날 출결 정보 등록
     public void createStudentAttendance(Long classId, Long stId, String attO, String attLate, String attX, String attEtc, String attReason, LocalDate attDate, String attResult) {
 
         Optional<Student> studentOptional = studentRepository.findById(stId);

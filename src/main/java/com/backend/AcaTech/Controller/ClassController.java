@@ -1,15 +1,10 @@
 package com.backend.AcaTech.Controller;
 
-import com.backend.AcaTech.Domain.Student.Student;
-import com.backend.AcaTech.Domain.Student.StudentClass;
-import com.backend.AcaTech.Dto.Class.ClassDetailResponseDto;
-import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
-import com.backend.AcaTech.Dto.Class.ClassStudentListResponseDto;
-import com.backend.AcaTech.Dto.Class.NewClassInfoResponseDto;
+import com.backend.AcaTech.Dto.Class.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceRequestDto;
-import com.backend.AcaTech.Dto.Student.StudentListResponseDto;
 import com.backend.AcaTech.Service.ClassService;
 import com.backend.AcaTech.Service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,6 +61,7 @@ public class ClassController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
+    //출결 등록
     @PostMapping("/user/{classId}")
     public ResponseEntity<?> createAttendance(@PathVariable Long classId, @RequestBody List<StudentAttendanceRequestDto> attendanceRequestDtos) {
         for(StudentAttendanceRequestDto attendanceRequestDto : attendanceRequestDtos) {
@@ -82,5 +78,28 @@ public class ClassController {
         return ResponseEntity.ok("Attendances created");
     }
 
+
+    //지난 출결 내용 조회
+    @GetMapping("/user/{classId}/prevclass")
+    public ResponseEntity<List<PreviousAttendanceDto>> getPreviousAttendances(@PathVariable Long classId) {
+        List<PreviousAttendanceDto> previousAttendances = classService.getPreviousAttendances(classId);
+        return ResponseEntity.ok(previousAttendances);
+    }
+
+
+    //지난 출결 정보 수정
+    @PatchMapping("/user/{classId}/prevclass")
+    public ResponseEntity<String> updateMultipleAttendances(@PathVariable Long classId, @RequestBody AttendanceUpdateRequestDto requestDto) {
+        try {
+            if (!classId.equals(requestDto.getClassId())) {
+                return new ResponseEntity<>("ClassId mismatch", HttpStatus.BAD_REQUEST);
+            }
+
+            classService.updateMultipleAttendances(requestDto);
+            return new ResponseEntity<>("Attendances updated successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
