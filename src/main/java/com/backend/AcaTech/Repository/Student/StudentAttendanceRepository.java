@@ -29,7 +29,7 @@ public interface StudentAttendanceRepository extends JpaRepository<StudentAttend
 //Optional<StudentAttendance> findByAttDateAndStudentClass_IdAndStudent_Id(LocalDate attDate, Long classId, Long studentId);
 //Optional<StudentAttendance> findByAtt_DateAndStudentClass_IdAndStudent_Id(LocalDate attDate, Long classId, Long studentId);
 @Query("SELECT s FROM StudentAttendance s WHERE s.att_date = :attDate AND s.studentClass.id = :classId AND s.student.id = :studentId")
-Optional<StudentAttendance> findByConditions(@Param("attDate") LocalDate attDate, @Param("classId") Long classId, @Param("studentId") Long studentId);
+List<StudentAttendance> findByConditions(@Param("attDate") LocalDate attDate, @Param("classId") Long classId, @Param("studentId") Long studentId);
 
 
 }

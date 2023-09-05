@@ -237,7 +237,6 @@ public class ClassService {
         return sortedList;
     }
 
-
     // 지난 출결 정보 수정
     public void updateMultipleAttendances(AttendanceUpdateRequestDto requestDto) {
         Long classId = requestDto.getClassId();
@@ -246,16 +245,23 @@ public class ClassService {
         for (AttendanceUpdateRequestDto.StudentAttendanceDto student : requestDto.getStudents()) {
             Long studentId = student.getStId();
 
-            StudentAttendance attendance = studentAttendanceRepository.findByConditions(attDate, classId, studentId)
-                    .orElseThrow(() -> new EntityNotFoundException("Attendance not found for classId: " + classId + ", att_date: " + attDate + ", and studentId: " + studentId));
+            // 변경: List<StudentAttendance>를 반환하도록 함
+            List<StudentAttendance> attendances = studentAttendanceRepository.findByConditions(attDate, classId, studentId);
 
-            attendance.setAtt_o(student.getAtt_o());
-            attendance.setAtt_late(student.getAtt_late());
-            attendance.setAtt_x(student.getAtt_x());
-            attendance.setAtt_etc(student.getAtt_etc());
-            attendance.setAtt_reason(student.getAtt_reason());
+            if (attendances.isEmpty()) {
+                throw new EntityNotFoundException("Attendance not found for classId: " + classId + ", att_date: " + attDate + ", and studentId: " + studentId);
+            }
 
-            studentAttendanceRepository.save(attendance);
+            // 변경: 모든 찾은 레코드를 업데이트
+            for (StudentAttendance attendance : attendances) {
+                attendance.setAtt_o(student.getAtt_o());
+                attendance.setAtt_late(student.getAtt_late());
+                attendance.setAtt_x(student.getAtt_x());
+                attendance.setAtt_etc(student.getAtt_etc());
+                attendance.setAtt_reason(student.getAtt_reason());
+
+                studentAttendanceRepository.save(attendance);
+            }
         }
     }
 
