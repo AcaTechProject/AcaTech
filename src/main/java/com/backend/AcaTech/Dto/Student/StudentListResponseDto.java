@@ -28,6 +28,7 @@ public class StudentListResponseDto {
         this.classInfos = classInfoList;
 
     }
+
     @Getter
     @Setter
     @NoArgsConstructor
