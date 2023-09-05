@@ -61,8 +61,10 @@ public class ClassController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    //출결 등록
-    @PostMapping("/user/{classId}")
+    // 새로운 출결 등록
+//    @PostMapping("/user/{classId}")
+
+    @PostMapping("/user/class2/{classId}")
     public ResponseEntity<?> createAttendance(@PathVariable Long classId, @RequestBody List<StudentAttendanceRequestDto> attendanceRequestDtos) {
         for(StudentAttendanceRequestDto attendanceRequestDto : attendanceRequestDtos) {
             studentService.createStudentAttendance(classId,
@@ -73,6 +75,7 @@ public class ClassController {
                     attendanceRequestDto.getAttEtc(),
                     attendanceRequestDto.getAttReason(),
                     attendanceRequestDto.getAttDate(),
+//                    java.time.LocalDate.now()
                     attendanceRequestDto.getAttResult());
         }
         return ResponseEntity.ok("Attendances created");
