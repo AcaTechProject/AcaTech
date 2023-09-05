@@ -1,5 +1,6 @@
 package com.backend.AcaTech.Controller;
 
+import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
 import com.backend.AcaTech.Dto.Score.*;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
@@ -21,6 +22,8 @@ public class ScoreController {
     public ScoreController(ScoreService scoreService) {
         this.scoreService = scoreService;
     }
+
+
 
     // 해당 학생 성적 등록
     @PostMapping("/student/{id}/grade")

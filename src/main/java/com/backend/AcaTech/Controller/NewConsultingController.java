@@ -3,9 +3,7 @@ package com.backend.AcaTech.Controller;
 import com.backend.AcaTech.Dto.NewConsultingDto.NewConsultingDto;
 import com.backend.AcaTech.Service.NewConsultingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,6 +11,7 @@ import java.util.List;
 //@RequiredArgsConstructor
 @RestController
 public class NewConsultingController {
+
 
     /*
     *	"st_id" : 88
@@ -30,18 +29,23 @@ public class NewConsultingController {
     }
 
 
-    // 전체 목록 조회
+    // 신규상담 전체 목록 조회
     @GetMapping("/newconsulting")
     public List<NewConsultingDto> getAllConsultings() {
         return newConsultingService.getAllConsultings();
     }
 
 
-    //새로운 상담내용 조회
+    // 신규상담 내용 조회
     @GetMapping(value = "/newconsulting/{id}")
     public List<NewConsultingDto> searchById(@PathVariable Long id) {
         return newConsultingService.searchById(id);
     }
 
+    // 신규상담 등록
+    @PostMapping(value="/newconsulting")
+    public Long createNewConsulting(@RequestBody NewConsultingDto newConsultingDto) {
+        return newConsultingService.createConsulting(newConsultingDto);
+    }
 
 }
