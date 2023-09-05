@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -26,14 +28,9 @@ public class StudentClass {
     @Column(nullable = false)
     private String className;
 
-
-
-
-    @ManyToMany
-    private List<Student> students = new ArrayList<>();
-
-
-
+//
+//    @ManyToMany
+//    private List<Student> students = new ArrayList<>();
 
 
     @Builder

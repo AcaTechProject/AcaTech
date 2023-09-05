@@ -55,7 +55,7 @@ public class ClassController {
 //
 
     // 특정 수업을 듣는 학생 리스트 조회 (classId로)
-    @GetMapping("/user/{classId}")
+    @GetMapping("/user/class2/{classId}")
     public ResponseEntity<Map<String, Object>> getStudentsByClassId(@PathVariable Long classId) {
         Map<String, Object> students = classService.findByName(classId);
         return new ResponseEntity<>(students, HttpStatus.OK);
