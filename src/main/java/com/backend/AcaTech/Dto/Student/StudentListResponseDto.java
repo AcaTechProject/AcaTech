@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 public class StudentListResponseDto {
 
+    private Long no;
     private String name;
 
     private String school;
