@@ -80,7 +80,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<Schedule> findByStartDateBetweenAndSchEdu(LocalDateTime startDate, LocalDateTime endDate, boolean schEdu) {
+    public List<Schedule> findByStartDateBetweenAndSchEdu(LocalDateTime startDate, LocalDateTime endDate, boolean schEdu, boolean schCons) {
         return scheduleRepository.findByStartDateBetweenAndSchEdu(startDate, endDate, schEdu);
     }
 
@@ -93,9 +93,14 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDateTime startOfMonth = currentDate.atStartOfDay();
         LocalDateTime endOfMonth = currentDate.atStartOfDay().plusMonths(1).minusNanos(1);
 
-        List<ScheduleDto> thisMonthSchedules = mapToDto(scheduleRepository.findByStartDateBetweenAndSchEdu(startOfMonth, endOfMonth, true));
-        List<ScheduleDto> todayEduSchedules = mapToDto(scheduleRepository.findByStartDateAndSchEdu(currentDate.atStartOfDay(), true));
-        List<ScheduleDto> todayConsSchedules = mapToDto(scheduleRepository.findByStartDateAndSchEdu(currentDate.atStartOfDay(), false));
+        List<ScheduleDto> thisMonthSchedules = mapToDto(scheduleRepository
+                .findByStartDateBetweenAndSchEduOrSchCons(startOfMonth, endOfMonth, true, true));
+
+        List<ScheduleDto> todayEduSchedules = mapToDto(scheduleRepository
+                .findByStartDateBetweenAndSchEdu(currentDate.atStartOfDay(), currentDate.atStartOfDay().plusDays(1), true));
+
+        List<ScheduleDto> todayConsSchedules = mapToDto(scheduleRepository
+                .findByStartDateBetweenAndSchEdu(currentDate.atStartOfDay(), currentDate.atStartOfDay().plusDays(1), false));
 
         response.put("this_month_schedule", thisMonthSchedules);
         response.put("today_edu_schedule", todayEduSchedules);
