@@ -16,7 +16,22 @@ public class StudentAttendanceRequestDto {
     private String attEtc;
     private String attReason;
     private LocalDate attDate;
+//    private LocalDate attDate= java.time.LocalDate.now();
     private String attResult;
 
-
+    public StudentAttendanceRequestDto(Long stId, int classId, String attO, String attLate, String attX, String attEtc, String attReason, LocalDate attDate, String attResult) {
+        this.stId = stId;
+        this.classId = classId;
+        this.attO = attO;
+        this.attLate = attLate;
+        this.attX = attX;
+        this.attEtc = attEtc;
+        this.attReason = attReason;
+        this.attDate = LocalDate.now();
+        this.attResult = attResult;
+    }
 }
+
+
+
+
