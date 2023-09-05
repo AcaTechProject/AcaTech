@@ -2,7 +2,7 @@ package com.backend.AcaTech.Service;
 
 import com.backend.AcaTech.Domain.Consulting.NewStudent;
 import com.backend.AcaTech.Dto.NewConsultingDto.NewConsultingDto;
-import com.backend.AcaTech.Repository.newConsulting.NewConsultingRepository;
+import com.backend.AcaTech.Repository.NewConsulting.NewConsultingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
