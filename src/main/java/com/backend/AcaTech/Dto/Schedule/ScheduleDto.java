@@ -1,5 +1,7 @@
 package com.backend.AcaTech.Dto.Schedule;
 
+import com.backend.AcaTech.Domain.Schedule.Schedule;
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
