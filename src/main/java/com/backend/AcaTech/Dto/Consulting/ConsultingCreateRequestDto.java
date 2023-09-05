@@ -5,14 +5,16 @@ import com.backend.AcaTech.Domain.Consulting.Consulting;
 import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Getter
+@NoArgsConstructor
 public class ConsultingCreateRequestDto {
     private User user;
     private Student student;
-    private LocalDate con_date;
+    private LocalDate con_date = LocalDate.now();;
     private String con_class;
     private String con_content;
     private String con_who;

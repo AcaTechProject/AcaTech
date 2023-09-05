@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class StudentCreateRequestDto {
     private String name;
     private String gender;

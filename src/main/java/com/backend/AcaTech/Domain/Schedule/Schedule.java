@@ -1,5 +1,6 @@
 package com.backend.AcaTech.Domain.Schedule;
 
+import com.backend.AcaTech.Domain.Class.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,14 +21,15 @@ public class Schedule {
     @Column(name = "sch_id", nullable = false)
     private Long schId;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
     @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date", nullable = false)
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "sch_title", nullable = false, length = 500)
     private String schTitle;
@@ -41,7 +44,8 @@ public class Schedule {
     private boolean schCons;
 
     @Builder
-    public Schedule(Date startDate, Date endDate, String schTitle, String schContent, boolean schEdu, boolean schCons) {
+    public Schedule(User user, LocalDateTime startDate, LocalDateTime endDate, String schTitle, String schContent, boolean schEdu, boolean schCons) {
+        this.user = user; // User 객체를 받아서 user 필드 초기화
         this.startDate = startDate;
         this.endDate = endDate;
         this.schTitle = schTitle;

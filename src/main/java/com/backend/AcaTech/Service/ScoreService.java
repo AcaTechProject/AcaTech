@@ -1,8 +1,11 @@
 package com.backend.AcaTech.Service;
 
+import com.backend.AcaTech.Domain.Class.User;
+import com.backend.AcaTech.Domain.Consulting.Consulting;
 import com.backend.AcaTech.Domain.Score.Score;
 import com.backend.AcaTech.Domain.Score.StudentScore;
 import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.*;
 import com.backend.AcaTech.Repository.Score.ScoreRepository;
 import com.backend.AcaTech.Repository.Score.StudentScroeRepository;
@@ -42,10 +45,15 @@ public class ScoreService {
         this.scoreRepository = scoreRepository;
         this.studentScroeRepository = studentScroeRepository;
     }
+
+
+
+
+
     @Transactional
-    public Long create(Long id, ScoreCreateRequestDto requestDto) {
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + id));
+    public Long create(Long studentId, ScoreCreateRequestDto requestDto) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
 
         StudentScore studentScore = StudentScore.builder()
                 .student(student)
