@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,16 +58,21 @@ public class ConsultingService {
         return consultingRepository.save(consulting).getId();
     }
 
-    @Transactional
     public List<ConsultingListResponseDto> getConsultingList(Long studentId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
 
         List<Consulting> consulting = consultingRepository.findByStudent(student);
 
-        return consulting.stream()
-                .map(ConsultingListResponseDto::new)
-                .collect(Collectors.toList());
+        List<ConsultingListResponseDto> responseDtoList = new ArrayList<>();
+        for (int i = 0; i < consulting.size(); i++) {
+            Consulting consultingItem = consulting.get(i);
+            ConsultingListResponseDto responseDto = new ConsultingListResponseDto(consultingItem);
+            responseDto.setNo((long) (i + 1)); // No를 추가
+            responseDtoList.add(responseDto);
+        }
+
+        return responseDtoList;
     }
 
     //상세 조회
