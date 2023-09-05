@@ -12,7 +12,9 @@ public interface ScheduleService {
 
     List<ScheduleDto> getAllSchedules();
 
-    List<Schedule> findByStartDateBetweenAndSchEdu(LocalDateTime startDate, LocalDateTime endDate, boolean schEdu);
+    List<Schedule> findByStartDateBetweenAndSchEdu(LocalDateTime startDate, LocalDateTime endDate, boolean schEdu, boolean schCons);
 
     ScheduleDto createSchedule(ScheduleDto scheduleDto);
+
+    void deleteSchedules(List<Long> schIds);
 }
