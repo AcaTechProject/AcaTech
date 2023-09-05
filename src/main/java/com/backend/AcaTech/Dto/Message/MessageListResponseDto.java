@@ -6,13 +6,16 @@ import com.backend.AcaTech.Domain.Message.Message;
 import com.backend.AcaTech.Domain.Message.MessageText;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class MessageListResponseDto {
 
+    private Long no;
     private Long id;
     private Long userId;
     private LocalDate mess_date;

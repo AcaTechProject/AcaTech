@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,13 +44,18 @@ public class MessageService {
 
     // 메시지 전체 조회(해당 사용자만)
     public List<MessageListResponseDto> getMessagesByUserId(Long userId) {
-        // userId로 해당 유저가 보낸 메시지 목록을 조회하는 로직을 작성
         List<Message> messages = messageRepository.findByUserId(userId);
-        return messages.stream()
-                .map(MessageListResponseDto::new)
-                .collect(Collectors.toList());
-    }
 
+        List<MessageListResponseDto> messageList = new ArrayList<>();
+
+        for (int i = 0; i < messages.size(); i++) {
+            MessageListResponseDto dto = new MessageListResponseDto(messages.get(i));
+            dto.setNo((long)(i + 1)); // No 값을 설정
+            messageList.add(dto);
+        }
+
+        return messageList;
+    }
     // 메시지 여러개 삭제
     @Transactional
     public void deleteMultiple(List<Long> ids) {
