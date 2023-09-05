@@ -1,11 +1,7 @@
 package com.backend.AcaTech.Dto.Class;
 
 import com.backend.AcaTech.Domain.Class.UserClass;
-import com.backend.AcaTech.Dto.Student.StudentListResponseDto;
 import lombok.Getter;
-import java.util.*;
-import java.util.stream.Collectors;
-
 
 @Getter
 public class ClassDetailResponseDto {
@@ -21,10 +17,10 @@ public class ClassDetailResponseDto {
 
 
     public ClassDetailResponseDto(UserClass entity) {
-        this.courseName = parseCourseName(entity.getClassName().getClass_name());
+        this.courseName = parseCourseName(entity.getClassName().getClassName());
         // 새로 추가
         this.user_name = entity.getUser().getName();
-        this.className = entity.getClassName().getClass_name();
+        this.className = entity.getClassName().getClassName();
         this.classId = entity.getClassName().getId();
 
     }

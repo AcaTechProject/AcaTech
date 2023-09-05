@@ -28,9 +28,9 @@ public class StudentClass {
     @Column(nullable = false)
     private String className;
 
-//
-//    @ManyToMany
-//    private List<Student> students = new ArrayList<>();
+
+    //@ManyToMany
+    //private List<Student> students = new ArrayList<>();
 
 
     @Builder

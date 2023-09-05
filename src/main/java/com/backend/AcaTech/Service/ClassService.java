@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 public class ClassService {
 
     private final UserClassRepository userClassRepository;
-    //    private final ClassNameRepository classNameRepository;
     public UserClass entity;
 
     @Autowired
@@ -38,10 +37,6 @@ public class ClassService {
 
     @Autowired
     private StudentRepository studentRepository;
-
-
-//    public CourseInfo courseEntity;
-
 //
 //    @Transactional
 //    public List<BoardListResponseDto> searchAllDesc() {
@@ -65,6 +60,13 @@ public class ClassService {
                 .collect(Collectors.toList());
     }
 
+
+
+
+
+
+
+    // 희윤
 
     // classId로 출결 과목 조회
     @Transactional
@@ -238,6 +240,7 @@ public class ClassService {
         return sortedList;
     }
 
+
     // 지난 출결 정보 수정
     public void updateMultipleAttendances(AttendanceUpdateRequestDto requestDto) {
         Long classId = requestDto.getClassId();
@@ -265,6 +268,7 @@ public class ClassService {
             }
         }
     }
+
 
 
 }

@@ -1,9 +1,10 @@
 package com.backend.AcaTech.Dto.Class;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter

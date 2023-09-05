@@ -11,11 +11,11 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findAllByOrderByIdDesc();
 
-
-    //0902 수정
     List<Student> findByClasses(StudentClass studentClass);
-//    List<Student> findByClasses(List<StudentClass> classes);
 
+    //Optional<Student> findByIdAndStudentId(Long conId, Long studentId);
+
+    // 희윤
     List<Student> findByClassesContains(StudentClass studentClass);
     //Optional<Student> findByIdAndStudentId(Long conId, Long studentId);
 
@@ -23,9 +23,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // 새로운 메서드
     @Query("SELECT s FROM Student s JOIN s.classes c WHERE c IN :classes")
     List<Student> findByMultipleClasses(@Param("classes") List<StudentClass> classes);
-
-
-
-
-
 }

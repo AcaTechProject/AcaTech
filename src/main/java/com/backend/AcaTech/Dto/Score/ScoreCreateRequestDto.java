@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class ScoreCreateRequestDto {
     private Student student;
     private String sco_season;

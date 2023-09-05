@@ -4,7 +4,8 @@ import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Domain.Student.StudentClass;
 import com.backend.AcaTech.Dto.Student.StudentListResponseDto;
 import lombok.Getter;
-import java.util.*;
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter

@@ -1,6 +1,8 @@
 package com.backend.AcaTech.Controller;
 
-import com.backend.AcaTech.Dto.Class.*;
+import com.backend.AcaTech.Dto.Class.AttendanceUpdateRequestDto;
+import com.backend.AcaTech.Dto.Class.ClassListResponseDto;
+import com.backend.AcaTech.Dto.Class.PreviousAttendanceDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceRequestDto;
 import com.backend.AcaTech.Service.ClassService;
 import com.backend.AcaTech.Service.StudentService;
@@ -11,7 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -21,10 +24,8 @@ public class ClassController {
     @Autowired
     private final ClassService classService;
 
-
     @Autowired
     private final StudentService studentService;
-
 
 
     @GetMapping("/user/class/{id}")
@@ -37,6 +38,8 @@ public class ClassController {
                 .filter(classDto -> classDto.getUser().equals(id))
                 .collect(Collectors.toList());
     }
+
+    // 희윤님
 
 
     // 과목별 출결 조회
@@ -105,5 +108,6 @@ public class ClassController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
 
 }

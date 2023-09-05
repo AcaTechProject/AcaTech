@@ -2,7 +2,7 @@ package com.backend.AcaTech.Service;
 
 import com.backend.AcaTech.Domain.Consulting.NewStudent;
 import com.backend.AcaTech.Dto.NewConsultingDto.NewConsultingDto;
-import com.backend.AcaTech.Repository.NewConsulting.NewConsultingRepository;
+import com.backend.AcaTech.Repository.newConsulting.NewConsultingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,6 @@ public class NewConsultingService {
     public NewStudent entity;
 
 
-    //신규 상담 조회
     @Transactional
     public List<NewConsultingDto> getAllConsultings() {
         return NewConsultingRepository.findAll().stream()
@@ -53,8 +52,7 @@ public class NewConsultingService {
         NewConsultingRepository.save(newStudent);
         return newStudent.getId();
     }
+
+
+
 }
-
-
-
-

@@ -13,11 +13,18 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public Optional<User> getUserById(Long userId) {
+        return userRepository.findById(userId);
+    }
 
     public User login(LoginRequestDto loginRequestDto) {
         Optional<User> byUserEmail = userRepository.findByEmail(loginRequestDto.getUser_email());
@@ -40,8 +47,6 @@ public class UserService {
         return null; // 로그인 실패
     }
 
-
-
     public User signUp(SignUpRequestDto signUpRequestDto) {
         if (userRepository.findByEmail(signUpRequestDto.getUser_email()).isPresent()) {
             // 이미 등록된 이메일이 있을 경우 처리
@@ -60,8 +65,8 @@ public class UserService {
     }
 
     public void updateAuthKey(Map<String, String> map) {
-        String email = (String) map.get("email");
-        String authKey = (String) map.get("authKey");
+        String email = map.get("email");
+        String authKey = map.get("authKey");
 
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {

@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 public class NewConsultingController {
 
+
     /*
     *	"st_id" : 88
 		"st_name" : "김민지",
@@ -46,4 +47,5 @@ public class NewConsultingController {
     public Long createNewConsulting(@RequestBody NewConsultingDto newConsultingDto) {
         return newConsultingService.createConsulting(newConsultingDto);
     }
+
 }
