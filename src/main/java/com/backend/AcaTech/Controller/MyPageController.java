@@ -7,33 +7,31 @@ import com.backend.AcaTech.Dto.MyPage.MyPageResponseDto;
 import com.backend.AcaTech.Dto.MyPage.MyPageUpdateRequestDto;
 import com.backend.AcaTech.Service.MyPageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @ResponseBody
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MyPageController {
 
     private final MyPageService myPageService;
 
-    @GetMapping(value = "/user/{id}")
+    @GetMapping("/user/{id}")
     public MyPageResponseDto searchById(@PathVariable Long id) {
         Optional<User> userOptional = myPageService.searchById(id);
         Optional<CourseInfo> classNameOptional = myPageService.getClassNameById(id);
-        User user = userOptional.orElse(null);
-        CourseInfo className = classNameOptional.orElse(null);
-        if (user != null && className != null) {
-            return new MyPageResponseDto(user, className);
-        } else {
-            return null;
-        }
+        User user = userOptional.orElseGet(() -> new User());
+        CourseInfo className = classNameOptional.orElseGet(() -> new CourseInfo());
+        return new MyPageResponseDto(user, className);
     }
 
     @PatchMapping("/user/{id}")
     public User updateUserInformation(@PathVariable Long id, @RequestBody MyPageUpdateRequestDto updateRequestDto) {
-        return myPageService.updateUserInformation(id, updateRequestDto);
+        Optional<User> userOptional = myPageService.searchById(id);
+        User user = userOptional.orElseGet(() -> new User());
+        myPageService.updateUserInformation(user.getId(), updateRequestDto);
+        return user;
     }
 }

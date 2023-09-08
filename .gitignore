@@ -37,3 +37,7 @@ main/resources
 
 ### VS Code ###
 .vscode/
+
+Application.yml
+application-aws.yml
+application-credentials.yml
