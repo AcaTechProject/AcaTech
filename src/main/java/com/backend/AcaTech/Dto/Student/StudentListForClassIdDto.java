@@ -9,7 +9,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 public class StudentListForClassIdDto {
+
+
+    //넘버링
+    int num;
 
 
     private String name;
@@ -23,6 +28,7 @@ public class StudentListForClassIdDto {
 //    private List<ClassInfo> classInfos;
 
     public StudentListForClassIdDto(Student entity) {
+//        this.num=num;
         this.id = entity.getId();
         this.name = entity.getName();
         this.parentPhone = entity.getParentPhone();

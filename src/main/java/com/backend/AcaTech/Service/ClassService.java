@@ -61,11 +61,6 @@ public class ClassService {
     }
 
 
-
-
-
-
-
     // 희윤
 
     // classId로 출결 과목 조회
@@ -178,9 +173,12 @@ public class ClassService {
 
         List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
 
+
         if (studentClasses.isEmpty()) {
             throw new EntityNotFoundException("Class not found with name: " + className);
         }
+
+
 
         List<Student> studentsInClass = studentClasses.stream()
                 .flatMap(sClass -> studentRepository.findByClasses(sClass).stream())
@@ -189,6 +187,12 @@ public class ClassService {
         List<StudentListForClassIdDto> studentDtos = studentsInClass.stream()
                 .map(StudentListForClassIdDto::new)
                 .collect(Collectors.toList());
+        int numbering = 1;
+        for (StudentListForClassIdDto studentDto : studentDtos) {
+            studentDto.setClassName(className);
+            studentDto.setNum(numbering++); // 넘버링 설정 및 증가
+        }
+
 
         // 여기에서 각 학생의 className을 설정
         for (StudentListForClassIdDto studentDto : studentDtos) {
@@ -268,7 +272,6 @@ public class ClassService {
             }
         }
     }
-
 
 
 }

@@ -241,8 +241,7 @@ public class StudentService {
     }
 
 
-    // 이름으로 검색해보기기
-
+    // 이름으로 검색해보기
    @Transactional
     public List<StudentListResponseDto> findByName(Long classId) {
         StudentClass studentClass = studentClassRepository.findById(classId)
