@@ -32,6 +32,7 @@ public class MyPageService {
 
     public User updateUserInformation(Long userId, MyPageUpdateRequestDto updateRequestDto) {
         Optional<User> userOptional = myPageRepository.findById(userId);
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (updateRequestDto.getUser_image() != null) {
@@ -43,13 +44,15 @@ public class MyPageService {
             if (updateRequestDto.getUser_phone() != null) {
                 user.setPhone(updateRequestDto.getUser_phone());
             }
+
             if (updateRequestDto.getUser_class() != null) {
                 CourseInfo className = classNameRepository.findByClassName(updateRequestDto.getUser_class());
                 if (className != null) {
-                    className.setClassName(updateRequestDto.getUser_class());
-                    classNameRepository.save(className);
+                    user.getClasses().clear();
+                    user.getClasses().add(className);
                 }
             }
+            
             if (updateRequestDto.getUser_grade() != null) {
                 user.setGrade(updateRequestDto.getUser_grade());
             }
