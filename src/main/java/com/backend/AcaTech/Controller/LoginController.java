@@ -60,7 +60,6 @@ public class LoginController {
     public ResponseEntity<String> logout(HttpSession session) {
         session.removeAttribute("userId"); // 세션에서 사용자 ID 제거
         String responseMessage = "로그아웃 성공";
-        session.invalidate(); // 세션 완전히 무효화
         return ResponseEntity.ok(responseMessage);
     }
 }
