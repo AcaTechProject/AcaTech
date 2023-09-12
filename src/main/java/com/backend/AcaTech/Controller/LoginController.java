@@ -30,7 +30,7 @@ public class LoginController {
     }
 
     // 로그인 처리
-    @PostMapping("/user/login")
+    @PostMapping("/user/login/{id}")
     public ResponseEntity<String> login(@RequestBody String requestBody, HttpSession session) {
         ObjectMapper objectMapper = new ObjectMapper(); // JSON 파싱을 위한 ObjectMapper
 
