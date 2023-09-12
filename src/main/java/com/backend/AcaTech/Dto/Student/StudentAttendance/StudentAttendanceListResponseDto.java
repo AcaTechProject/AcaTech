@@ -3,11 +3,15 @@ package com.backend.AcaTech.Dto.Student.StudentAttendance;
 
 import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 public class StudentAttendanceListResponseDto {
+
+    private Long no;
 
     private Long studentId;
 

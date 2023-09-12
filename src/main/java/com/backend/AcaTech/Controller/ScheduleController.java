@@ -19,13 +19,18 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
+    //일정 조회
     @GetMapping("/list")
     public Map<String, Object> getScheduleInfo() {
         return scheduleService.getScheduleInfo();
     }
 
+    //일정 등록
     @PostMapping("/create")
     public ScheduleDto createSchedule(@RequestBody ScheduleDto scheduleDto) {
         return scheduleService.createSchedule(scheduleDto);
     }
+
+    @DeleteMapping("/delete/multiple")
+    public void deleteSchedules(@RequestBody List<Long> ids) {scheduleService.deleteSchedules(ids);}
 }

@@ -20,7 +20,6 @@ public class ConsultingController {
 
     private final ConsultingService consultingService;
 
-
     @Autowired
     public ConsultingController(ConsultingService consultingService) {
         this.consultingService = consultingService;

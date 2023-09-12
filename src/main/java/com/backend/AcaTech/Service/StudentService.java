@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -175,11 +176,18 @@ public class StudentService {
 
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
         List<StudentAttendance> attendances = studentAttendanceRepository.findByStudent(student);
 
-        return attendances.stream()
-                .map(StudentAttendanceListResponseDto::new)
-                .collect(Collectors.toList());
+        List<StudentAttendanceListResponseDto> attendanceList = new ArrayList<>();
+
+        for (int i = 0; i < attendances.size(); i++) {
+            StudentAttendanceListResponseDto dto = new StudentAttendanceListResponseDto(attendances.get(i));
+            dto.setNo((long)(i + 1)); // No 값을 설정
+            attendanceList.add(dto);
+        }
+
+        return attendanceList;
     }
 
     // 학생 출석 통계
@@ -221,9 +229,17 @@ public class StudentService {
     // 학생 전체 리스트 조회
     @Transactional
     public List<StudentListResponseDto> studentList() {
-        return studentRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).stream()
-                .map(StudentListResponseDto::new)
-                .collect(Collectors.toList());
+        List<Student> students = studentRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+
+        List<StudentListResponseDto> studentList = new ArrayList<>();
+
+        for (int i = 0; i < students.size(); i++) {
+            StudentListResponseDto dto = new StudentListResponseDto(students.get(i));
+            dto.setNo((long)(i + 1)); // No 값을 설정
+            studentList.add(dto);
+        }
+
+        return studentList;
     }
 
 
@@ -243,7 +259,7 @@ public class StudentService {
 
     // 이름으로 검색해보기기
 
-   @Transactional
+    @Transactional
     public List<StudentListResponseDto> findByName(Long classId) {
         StudentClass studentClass = studentClassRepository.findById(classId)
                 .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
@@ -260,10 +276,17 @@ public class StudentService {
                 .flatMap(sClass -> studentRepository.findByClasses(sClass).stream())
                 .collect(Collectors.toList());
 
-        return studentsInClass.stream()
-                .map(StudentListResponseDto::new)
-                .collect(Collectors.toList());
+        List<StudentListResponseDto> studentList = new ArrayList<>();
+
+        for (int i = 0; i < studentsInClass.size(); i++) {
+            StudentListResponseDto dto = new StudentListResponseDto(studentsInClass.get(i));
+            dto.setNo((long)(i + 1)); // No 값을 설정
+            studentList.add(dto);
+        }
+
+        return studentList;
     }
+
 
     // 메시지 부분 학생 정보
     @Transactional
