@@ -1,5 +1,7 @@
 package com.backend.AcaTech.Dto.MyPage;
 
+import com.backend.AcaTech.Domain.Class.User;
+import com.backend.AcaTech.Domain.Class.CourseInfo;
 import lombok.Getter;
 import lombok.Setter;
 

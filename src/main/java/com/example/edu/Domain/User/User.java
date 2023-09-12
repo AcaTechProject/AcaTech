@@ -1,13 +1,10 @@
-package com.backend.AcaTech.Domain.Class;
+package com.example.edu.Domain.User;
 
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -18,7 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    private Long id;
+    private Long user_id;
 
     @Column(name = "user_name", nullable = false)
     private String name;
@@ -50,16 +47,11 @@ public class User {
     @Column(name = "auth_status")
     private Integer authStatus;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_class",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "class_id")
-    )
-    private Set<CourseInfo> classes;
+    @Column(name = "user_class")
+    private String userClass;
 
     @Builder
-    public User(String name, String email, String pwd, String phone, String major, String code, String grade, String image) {
+    public User(String name, String email, String pwd, String phone, String major, String code, String grade, String image, String userClass) {
         this.name = name;
         this.email = email;
         this.pwd = pwd;
@@ -68,6 +60,6 @@ public class User {
         this.code = code;
         this.grade = grade;
         this.image = image;
-        this.classes = new HashSet<>();
+        this.userClass = userClass;
     }
 }
