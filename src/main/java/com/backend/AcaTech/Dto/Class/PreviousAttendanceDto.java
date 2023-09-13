@@ -8,7 +8,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class PreviousAttendanceDto {
-    private Long no;
+
+    //넘버링
+    private int num;
+
+//    private Long no;
     private LocalDate dateTime;
     private String className;
     private String attendanceInfo;
@@ -16,8 +20,8 @@ public class PreviousAttendanceDto {
     public PreviousAttendanceDto() {
     }
 
-    public PreviousAttendanceDto(Long no, LocalDate dateTime, String className, String attendanceInfo) {
-        this.no = no;
+    public PreviousAttendanceDto(LocalDate dateTime, String className, String attendanceInfo) {
+//        this.no = no;
         this.dateTime = dateTime;
         this.className = className;
         this.attendanceInfo = attendanceInfo;
