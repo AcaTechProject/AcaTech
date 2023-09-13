@@ -187,11 +187,16 @@ public class ClassService {
         List<StudentListForClassIdDto> studentDtos = studentsInClass.stream()
                 .map(StudentListForClassIdDto::new)
                 .collect(Collectors.toList());
+
+
+
         int numbering = 1;
         for (StudentListForClassIdDto studentDto : studentDtos) {
             studentDto.setClassName(className);
             studentDto.setNum(numbering++); // 넘버링 설정 및 증가
         }
+
+
 
 
         // 여기에서 각 학생의 className을 설정

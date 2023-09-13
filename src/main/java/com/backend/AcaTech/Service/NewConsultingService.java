@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @RequiredArgsConstructor
@@ -21,9 +22,23 @@ public class NewConsultingService {
 
     @Transactional
     public List<NewConsultingDto> getAllConsultings() {
-        return NewConsultingRepository.findAll().stream()
-                .map(NewConsultingDto::new)
+
+        List<NewStudent> allConsultings = NewConsultingRepository.findAll();
+
+        int totalCount = allConsultings.size();
+
+        return IntStream.range(0, totalCount)
+                .mapToObj(index -> {
+                    NewConsultingDto dto = new NewConsultingDto(allConsultings.get(index));
+                    dto.setNum(totalCount - index);  // 내림차순 넘버링
+                    return dto;
+                })
                 .collect(Collectors.toList());
+
+
+//        return NewConsultingRepository.findAll().stream()
+//                .map(NewConsultingDto::new)
+//                .collect(Collectors.toList());
     }
 
     @Transactional

@@ -8,6 +8,10 @@ import lombok.Setter;
 @Setter
 public class NewConsultingDto {
 
+    //넘버링
+    private int num;
+
+
     private Long id;
     private String st_name;
     private String st_gender;
