@@ -30,7 +30,7 @@ public class LoginController {
     }
 
     // 로그인 처리
-    @PostMapping("/user/login/{id}")
+    @PostMapping("/user/login")
     public ResponseEntity<String> login(@RequestBody String requestBody, HttpSession session) {
         ObjectMapper objectMapper = new ObjectMapper(); // JSON 파싱을 위한 ObjectMapper
 
@@ -41,7 +41,7 @@ public class LoginController {
             if (loggedInUser != null) {
                 // 로그인 성공
                 session.setAttribute("userId", loggedInUser.getId()); // 사용자 ID를 세션에 저장
-                String responseMessage = "로그인 성공: " + loggedInUser.getEmail();
+                String responseMessage = "로그인 성공: " + loggedInUser.getEmail() + "\n" + loggedInUser.getId();
                 return ResponseEntity.ok(responseMessage);
             } else {
                 // 로그인 실패
