@@ -1,10 +1,14 @@
 package com.backend.AcaTech.Controller;
 
+import com.backend.AcaTech.Domain.Student.Student;
+import com.backend.AcaTech.Dto.Response.ResponseMessage;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
+import com.backend.AcaTech.Repository.Student.StudentRepository;
 import com.backend.AcaTech.Service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +23,27 @@ public class StudentController {
 
     @Autowired
     private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
     @PostMapping("/student")
-    public Long createStudent(@RequestBody StudentCreateRequestDto requestDto) {
-        return studentService.createStudent(requestDto);
+    public ResponseMessage createStudent(@RequestBody StudentCreateRequestDto requestDto) {
+        try {
+            // 학생 생성 로직
+            Long studentId = studentService.createStudent(requestDto);
+
+            // 저장된 데이터를 조회
+            Student savedStudent = studentRepository.findById(studentId)
+                    .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
+
+            // 저장된 데이터를 응답 메시지에 추가
+            return new ResponseMessage<>(true, "학생 등록 성공", savedStudent);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseMessage<>(false, ex.getMessage(), null);
+        } catch (Exception e) {
+            return new ResponseMessage<>(false, "서버 오류: " + e.getMessage(), null);
+        }
     }
+
 
     @GetMapping("/student/{id}")
     public StudentResponseDto searchById(@PathVariable Long id) {

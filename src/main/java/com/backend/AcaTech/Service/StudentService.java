@@ -51,48 +51,66 @@ public class StudentService {
     // 신규 학생 추가
     @Transactional
     public Long createStudent(StudentCreateRequestDto requestDto) {
-        Student student = Student.builder()
-                .name(requestDto.getName())
-                .gender(requestDto.getGender())
-                .birth(requestDto.getBirth())
-                .school(requestDto.getSchool())
-                .grade(requestDto.getGrade())
-                .phone(requestDto.getPhone())
-                .etc(requestDto.getEtc())
-                .image(requestDto.getImage())
-                .teacher(requestDto.getTeacher())
-                .parentPhone(requestDto.getParentPhone())
-                .first_date(requestDto.getFirst_date())
+        try {
+            // 데이터 유효성 검사
+            validateStudentCreateRequest(requestDto);
 
-                .st_write(requestDto.getSt_write())
+            Student student = Student.builder()
+                    .name(requestDto.getName())
+                    .gender(requestDto.getGender())
+                    .birth(requestDto.getBirth())
+                    .school(requestDto.getSchool())
+                    .grade(requestDto.getGrade())
+                    .phone(requestDto.getPhone())
+                    .etc(requestDto.getEtc())
+                    .image(requestDto.getImage())
+                    .teacher(requestDto.getTeacher())
+                    .parentPhone(requestDto.getParentPhone())
+                    .first_date(requestDto.getFirst_date())
+                    .st_write(requestDto.getSt_write())
+                    .st_update_write(requestDto.getSt_update_write())
+                    .build();
 
-                .st_update_write(requestDto.getSt_update_write())
-                .build();
+            Student savedStudent = studentRepository.save(student);
 
-        Student savedStudent = studentRepository.save(student);
-
-        if (requestDto.getFamilyInfos() != null) {
-            for (StudentCreateRequestDto.FamilyInfo familyInfo : requestDto.getFamilyInfos()) {
-                StudentFamily family = StudentFamily.builder()
-                        .student(savedStudent)
-                        .fa_name(familyInfo.getFa_name())
-                        .fa_memo(familyInfo.getFa_memo())
-                        .build();
-                studentFamilyRepository.save(family);
+            if (requestDto.getFamilyInfos() != null) {
+                for (StudentCreateRequestDto.FamilyInfo familyInfo : requestDto.getFamilyInfos()) {
+                    StudentFamily family = StudentFamily.builder()
+                            .student(savedStudent)
+                            .fa_name(familyInfo.getFa_name())
+                            .fa_memo(familyInfo.getFa_memo())
+                            .build();
+                    studentFamilyRepository.save(family);
+                }
             }
-        }
 
-        if (requestDto.getClassInfos() != null) {
-            for (StudentCreateRequestDto.ClassInfo classInfo : requestDto.getClassInfos()) {
-                StudentClass studentClass = StudentClass.builder()
-                        .student(savedStudent)
-                        .class_name(classInfo.getClass_name())
-                        .build();
-                studentClassRepository.save(studentClass);
+            if (requestDto.getClassInfos() != null) {
+                for (StudentCreateRequestDto.ClassInfo classInfo : requestDto.getClassInfos()) {
+                    StudentClass studentClass = StudentClass.builder()
+                            .student(savedStudent)
+                            .class_name(classInfo.getClass_name())
+                            .build();
+                    studentClassRepository.save(studentClass);
+                }
             }
+            return savedStudent.getId();
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException("학생 등록에 실패하였습니다: " + ex.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("서버 오류: " + e.getMessage());
         }
-        return savedStudent.getId();
     }
+
+
+    // 학생 데이터 생성 요청의 유효성을 검사하는 메서드
+    private void validateStudentCreateRequest(StudentCreateRequestDto requestDto) {
+        if (requestDto.getName() == null || requestDto.getName().isEmpty()) {
+            throw new IllegalArgumentException("이름은 필수 입력 항목입니다.");
+        }
+        // 다른 필수 입력 항목에 대한 유효성 검사도 추가
+    }
+
+
 
     // 학생 상세 조회
     @Transactional
