@@ -72,13 +72,6 @@ public class ConsultingService {
     }
 
 
-// 나머지 코드는 이전 답변과 동일
-
-
-
-// 나머지 코드는 이전 답변과 동일
-
-
 
     private void validateInput(ConsultingCreateRequestDto requestDto, Long studentId) {
         if (requestDto == null) {
