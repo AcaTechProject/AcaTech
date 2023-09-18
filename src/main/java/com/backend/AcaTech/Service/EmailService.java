@@ -1,6 +1,6 @@
 package com.backend.AcaTech.Service;
 
-import com.example.edu.Utils.MailUtils;
+import com.backend.AcaTech.Utils.MailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
