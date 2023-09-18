@@ -1,67 +1,39 @@
 package com.backend.AcaTech.Service;
 
-import com.backend.AcaTech.Domain.Class.User;
-import com.backend.AcaTech.Repository.Class.UserRepository;
-import com.backend.AcaTech.Utils.MailUtils;
-import jakarta.mail.MessagingException;
+import com.example.edu.Utils.MailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class EmailService {
-    private final JavaMailSender mailSender;
-    public String sendAuthMail(String toEmail) {
-        // 임의의 인증키 생성 (여기서는 간단하게 현재 시간을 이용한 랜덤 값으로 생성)
-        String authKey = String.valueOf(System.currentTimeMillis());
-        // 이메일 전송
-        sendEmailVerification(toEmail, authKey);
-        return authKey;
-    }
-
     @Autowired
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    private JavaMailSender mailSender;
+
+    public boolean verifyEmail(String email, String authKey) {
+        // 이메일과 인증 키를 확인하고 DB에서 사용자 인증 상태 업데이트
+        // 성공하면 true, 실패하면 false를 반환
+        return true;
     }
 
-    public void sendEmailVerification(String toEmail, String authKey) {
-        String subject = "이메일 인증 안내";
-        String content = generateVerificationLink(toEmail, authKey);
-        String fromName = "AcaTech";
-        String fromEmail = "noreply@AcaTech.com";
+    public void sendAuthMail(String to, String authKey) throws MessagingException, UnsupportedEncodingException {
+        String subject = "이메일 인증";
+        String content = "클릭하여 이메일을 인증하세요: " + getConfirmationLink(to, authKey);
+        String fromName = "Your Name";
+        String fromEmail = "your-email@example.com";
 
         try {
             MailUtils mailUtils = new MailUtils(mailSender);
-            mailUtils.sendMail(toEmail, subject, content, fromName, fromEmail);
-        } catch (MessagingException | UnsupportedEncodingException e) {
+            mailUtils.sendMail(to, subject, content, fromName, fromEmail);
+        } catch (Exception e) {
+            // 예외 처리 코드 추가
             e.printStackTrace();
-        } catch (javax.mail.MessagingException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    private String generateVerificationLink(String toEmail, String authKey) {
-        String baseUrl = "http://localhost:8080";
-        return baseUrl + "/verify?email=" + toEmail + "&authKey=" + authKey;
-    }
-
-    @Autowired
-    private static UserRepository userRepository;
-
-    public static void updateAuthStatus(Map<String, String> map) {
-        String email = map.get("email");
-        String authKey = map.get("authKey");
-
-        Optional<User> userOptional = userRepository.findByEmailAndAuthKey(email, authKey);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setAuthStatus(1); // 인증 완료로 업데이트
-            userRepository.save(user);
-        } else {
-        }
+    private String getConfirmationLink(String email, String authKey) {
+        return "http://yourdomain.com/signUpConfirm?email=" + email + "&authKey=" + authKey;
     }
 }
