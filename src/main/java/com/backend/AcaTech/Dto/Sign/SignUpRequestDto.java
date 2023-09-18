@@ -1,10 +1,12 @@
 package com.backend.AcaTech.Dto.Sign;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class SignUpRequestDto {
     private String user_name;
     private String user_email;
@@ -13,5 +15,5 @@ public class SignUpRequestDto {
     private String user_major;
     private String user_code;
     private String authKey;
-    private int auth_status;
+    private int auth_status = 0;
 }

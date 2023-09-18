@@ -41,7 +41,7 @@ public class LoginController {
             if (loggedInUser != null) {
                 // 로그인 성공
                 session.setAttribute("userId", loggedInUser.getId()); // 사용자 ID를 세션에 저장
-                String responseMessage = "로그인 성공: " + loggedInUser.getEmail() + "\n" + loggedInUser.getId();
+                String responseMessage = "" + loggedInUser.getId();
                 return ResponseEntity.ok(responseMessage);
             } else {
                 // 로그인 실패

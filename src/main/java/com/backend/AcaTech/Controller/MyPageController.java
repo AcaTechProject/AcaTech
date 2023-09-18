@@ -15,6 +15,7 @@ import java.util.Optional;
 @ResponseBody
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class MyPageController {
 
     private final MyPageService myPageService;
