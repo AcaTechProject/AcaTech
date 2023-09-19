@@ -1,6 +1,6 @@
 package com.backend.AcaTech.Service;
 
-import com.example.edu.Utils.MailUtils;
+import com.backend.AcaTech.Utils.MailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,6 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     public boolean verifyEmail(String email, String authKey) {
-        // 이메일과 인증 키를 확인하고 DB에서 사용자 인증 상태 업데이트
-        // 성공하면 true, 실패하면 false를 반환
         return true;
     }
 
@@ -28,7 +26,6 @@ public class EmailService {
             MailUtils mailUtils = new MailUtils(mailSender);
             mailUtils.sendMail(to, subject, content, fromName, fromEmail);
         } catch (Exception e) {
-            // 예외 처리 코드 추가
             e.printStackTrace();
         }
     }
