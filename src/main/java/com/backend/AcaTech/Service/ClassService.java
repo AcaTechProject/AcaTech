@@ -61,11 +61,6 @@ public class ClassService {
     }
 
 
-
-
-
-
-
     // 희윤
 
     // classId로 출결 과목 조회
@@ -178,9 +173,11 @@ public class ClassService {
 
         List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
 
+
         if (studentClasses.isEmpty()) {
             throw new EntityNotFoundException("Class not found with name: " + className);
         }
+
 
         List<Student> studentsInClass = studentClasses.stream()
                 .flatMap(sClass -> studentRepository.findByClasses(sClass).stream())
@@ -189,6 +186,14 @@ public class ClassService {
         List<StudentListForClassIdDto> studentDtos = studentsInClass.stream()
                 .map(StudentListForClassIdDto::new)
                 .collect(Collectors.toList());
+
+
+        int numbering = 1;
+        for (StudentListForClassIdDto studentDto : studentDtos) {
+            studentDto.setClassName(className);
+            studentDto.setNum(numbering++); // 넘버링 설정 및 증가
+        }
+
 
         // 여기에서 각 학생의 className을 설정
         for (StudentListForClassIdDto studentDto : studentDtos) {
@@ -231,11 +236,19 @@ public class ClassService {
             attendanceSummaryMap.put(date, dto);
         }
 
+
         // Map의 Value를 List로 변환
         List<PreviousAttendanceDto> sortedList = new ArrayList<>(attendanceSummaryMap.values());
 
         // List를 dateTime을 기준으로 정렬
         sortedList.sort(Comparator.comparing(PreviousAttendanceDto::getDateTime).reversed());
+
+
+// 넘버링 부여
+        for (int i = 0; i < sortedList.size(); i++) {
+            sortedList.get(i).setNum(i + 1);
+        }
+
 
         return sortedList;
     }
@@ -268,7 +281,6 @@ public class ClassService {
             }
         }
     }
-
 
 
 }

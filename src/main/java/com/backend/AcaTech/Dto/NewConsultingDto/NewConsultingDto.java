@@ -1,12 +1,17 @@
 package com.backend.AcaTech.Dto.NewConsultingDto;
 
 import com.backend.AcaTech.Domain.Consulting.NewStudent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class NewConsultingDto {
+
+    //넘버링
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)  // 기본값이 아닐 때만 JSON에 포함
+    private int num;
 
     private Long id;
     private String st_name;
@@ -23,6 +28,12 @@ public class NewConsultingDto {
     public NewConsultingDto() {
         // 기본 생성자
     }
+
+
+
+
+
+
     public NewConsultingDto(NewStudent entity){
         this.id = entity.getId();
         this.st_name = entity.getNew_name();
