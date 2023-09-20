@@ -52,7 +52,11 @@ public class StudentController {
 
     // 학생 정보 삭제
     @DeleteMapping("/student/{id}")
-    public void deleteStudent(@PathVariable Long id) {studentService.delete(id);}
+    public ResponseEntity<ResponseMessage<Void>> deleteStudent(@PathVariable Long id) {
+        ResponseMessage<Void> responseMessage = studentService.delete(id);
+        HttpStatus status = responseMessage.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;
+        return ResponseEntity.status(status).body(responseMessage);
+    }
 
     // 학생 정보 수정
     @PutMapping("/student/{id}")
