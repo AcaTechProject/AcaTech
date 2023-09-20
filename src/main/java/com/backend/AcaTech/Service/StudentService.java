@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
+import com.backend.AcaTech.Dto.Response.ResponseMessage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -181,12 +181,21 @@ public class StudentService {
 
     // 학생 정보 삭제
     @Transactional
-    public void delete(Long id){
-        Student student = studentRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
+    public ResponseMessage<Void> delete(Long id) {
+        try {
+            Student student = studentRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
 
-        studentRepository.delete(student);
+            studentRepository.delete(student);
+
+            return new ResponseMessage<>(true, "삭제 성공", null);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseMessage<>(false, ex.getMessage(), null);
+        } catch (Exception e) {
+            return new ResponseMessage<>(false, "서버 오류: " + e.getMessage(), null);
+        }
     }
+
 
     // 학생 출석 리스트
     @Transactional

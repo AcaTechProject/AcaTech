@@ -3,6 +3,8 @@ package com.backend.AcaTech.Controller;
 import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Message.MessageCreateRequestDto;
 import com.backend.AcaTech.Dto.Message.MessageListResponseDto;
+import com.backend.AcaTech.Dto.Message.MessageResponseDto;
+import com.backend.AcaTech.Dto.Response.ResponseMessage;
 import com.backend.AcaTech.Dto.Sms.Request;
 import com.backend.AcaTech.Dto.Sms.SmsRequest;
 import com.backend.AcaTech.Dto.Sms.SmsResponse;
@@ -10,8 +12,10 @@ import com.backend.AcaTech.Service.MessageService;
 import com.backend.AcaTech.Service.SmsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -35,6 +39,8 @@ public class SmsController {
         return ResponseEntity.ok().body(data);
     }
 
+
+    // 다중 메시지 전송
     @PostMapping("/students/message/multi-send")
     public ResponseEntity<List<SmsResponse>> sendMessagesToStudents(@RequestBody List<Request> requests) {
         List<SmsResponse> responses = new ArrayList<>();
@@ -49,11 +55,21 @@ public class SmsController {
         }
         return ResponseEntity.ok().body(responses);
     }
+
+
     // 메시지 저장
     @PostMapping("/student/message/save")
-    public Long createBoard(@RequestBody MessageCreateRequestDto requestDto) {
-        return messageService.create(requestDto);
+    public ResponseEntity<ResponseMessage> createMessage(@RequestBody MessageCreateRequestDto requestDto) {
+        try {
+            MessageResponseDto messageId = messageService.createMessage(requestDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage<>(true, "메시지 저장 성공", messageId));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage<>(false, ex.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage<>(false, "서버 오류: " + e.getMessage(), null));
+        }
     }
+
 
     // 메시시 조회
     @GetMapping("/message/{userId}")
