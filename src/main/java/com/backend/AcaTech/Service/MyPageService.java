@@ -8,6 +8,8 @@ import com.backend.AcaTech.Repository.MyPage.MyPageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +34,7 @@ public class MyPageService {
 
     public User updateUserInformation(Long userId, MyPageUpdateRequestDto updateRequestDto) {
         Optional<User> userOptional = myPageRepository.findById(userId);
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (updateRequestDto.getUser_image() != null) {
@@ -43,13 +46,24 @@ public class MyPageService {
             if (updateRequestDto.getUser_phone() != null) {
                 user.setPhone(updateRequestDto.getUser_phone());
             }
+
             if (updateRequestDto.getUser_class() != null) {
-                CourseInfo className = classNameRepository.findByClassName(updateRequestDto.getUser_class());
-                if (className != null) {
-                    className.setClassName(updateRequestDto.getUser_class());
-                    classNameRepository.save(className);
+                String classListString = updateRequestDto.getUser_class();
+
+                // 클래스 이름을 쉼표와 공백으로 구분하여 배열로 분리
+                String[] classNames = classListString.split(", ");
+
+                List<CourseInfo> userClasses = new ArrayList<>();
+
+                for (String className : classNames) {
+                    CourseInfo existingClass = classNameRepository.findByClassName(className);
+                    if (existingClass != null) {
+                        user.getClasses().clear();
+                        user.getClasses().add(existingClass);
+                    }
                 }
             }
+
             if (updateRequestDto.getUser_grade() != null) {
                 user.setGrade(updateRequestDto.getUser_grade());
             }

@@ -11,6 +11,7 @@ import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingListResponseDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingUpdateRequestDto;
+import com.backend.AcaTech.Dto.Response.ResponseMessage;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentCreateRequestDto;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,30 +45,66 @@ public class ConsultingService {
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
     }
-    public Long create(Long studentId, ConsultingCreateRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.getUser().getId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+    public ResponseMessage create(Long studentId, ConsultingCreateRequestDto requestDto) {
+        try {
+            validateInput(requestDto, studentId);
 
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
+            User user = userRepository.findById(requestDto.getUser().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
 
-        Consulting consulting = requestDto.toEntity();
-        consulting.setUser(user);
-        consulting.setStudent(student);
+            Student student = studentRepository.findById(studentId)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
 
-        return consultingRepository.save(consulting).getId();
+            Consulting consulting = requestDto.toEntity();
+            consulting.setUser(user);
+            consulting.setStudent(student);
+
+            Consulting savedConsulting = consultingRepository.save(consulting);
+
+            // 저장된 값들을 반환
+            ConsultingResponseDto responseDto = new ConsultingResponseDto(savedConsulting);
+            return new ResponseMessage<>(true, "성공", responseDto);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseMessage<>(false, ex.getMessage(), null);
+        } catch (Exception e) {
+            return new ResponseMessage<>(false, "서버 오류: " + e.getMessage(), null);
+        }
     }
 
-    @Transactional
+
+
+    private void validateInput(ConsultingCreateRequestDto requestDto, Long studentId) {
+        if (requestDto == null) {
+            throw new IllegalArgumentException("입력 값이 없습니다.");
+        }
+
+        if (requestDto.getUser() == null || requestDto.getUser().getId() == null) {
+            throw new IllegalArgumentException("유저 정보가 누락되었습니다.");
+        }
+
+        if (studentId == null) {
+            throw new IllegalArgumentException("학생 아이디가 누락되었습니다.");
+        }
+
+    }
+
+
+
     public List<ConsultingListResponseDto> getConsultingList(Long studentId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + studentId));
 
         List<Consulting> consulting = consultingRepository.findByStudent(student);
 
-        return consulting.stream()
-                .map(ConsultingListResponseDto::new)
-                .collect(Collectors.toList());
+        List<ConsultingListResponseDto> responseDtoList = new ArrayList<>();
+        for (int i = 0; i < consulting.size(); i++) {
+            Consulting consultingItem = consulting.get(i);
+            ConsultingListResponseDto responseDto = new ConsultingListResponseDto(consultingItem);
+            responseDto.setNo((long) (i + 1)); // No를 추가
+            responseDtoList.add(responseDto);
+        }
+
+        return responseDtoList;
     }
 
     //상세 조회

@@ -1,11 +1,13 @@
 package com.backend.AcaTech.Domain.Class;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -20,7 +22,11 @@ public class CourseInfo {
     private Long id;
 
     @Column(name = "class_name", nullable = false)
-    private String className; // 변경된 변수명
+    private String className;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "classes")
+    private Set<User> users;
 
     @Builder
     public CourseInfo(String className) {

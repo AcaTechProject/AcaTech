@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -48,8 +50,16 @@ public class User {
     @Column(name = "auth_status")
     private Integer authStatus;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_class",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "class_id")
+    )
+    private Set<CourseInfo> classes;
+
     @Builder
-    public User(String name, String email, String pwd, String phone, String major, String code, String grade, String image, String userClass) {
+    public User(String name, String email, String pwd, String phone, String major, String code, String grade, String image) {
         this.name = name;
         this.email = email;
         this.pwd = pwd;
@@ -58,5 +68,6 @@ public class User {
         this.code = code;
         this.grade = grade;
         this.image = image;
+        this.classes = new HashSet<>();
     }
 }

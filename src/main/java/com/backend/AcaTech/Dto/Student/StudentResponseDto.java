@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 @Getter
 public class StudentResponseDto {
+
+    private Long id;
     private String name;
     private String gender;
     private String birth;
@@ -35,6 +37,7 @@ public class StudentResponseDto {
     private List<StudentResponseDto.ClassInfo> classInfos;
 
     public StudentResponseDto(Student entity, List<StudentFamily> familyInfos, List<StudentClass> classInfos) {
+        this.id = entity.getId();
         this.name = entity.getName();
         this.gender = entity.getGender();
         this.birth = entity.getBirth();

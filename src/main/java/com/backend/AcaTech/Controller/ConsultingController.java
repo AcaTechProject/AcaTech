@@ -4,6 +4,7 @@ import com.backend.AcaTech.Dto.Consulting.ConsultingCreateRequestDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingListResponseDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingResponseDto;
 import com.backend.AcaTech.Dto.Consulting.ConsultingUpdateRequestDto;
+import com.backend.AcaTech.Dto.Response.ResponseMessage;
 import com.backend.AcaTech.Dto.Score.ScoreCreateRequestDto;
 import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Service.ConsultingService;
@@ -20,7 +21,6 @@ public class ConsultingController {
 
     private final ConsultingService consultingService;
 
-
     @Autowired
     public ConsultingController(ConsultingService consultingService) {
         this.consultingService = consultingService;
@@ -28,8 +28,9 @@ public class ConsultingController {
 
     // 해당 학생 상담 등록
     @PostMapping("/student/{id}/consulting")
-    public Long create(@PathVariable Long id, @RequestBody ConsultingCreateRequestDto requestDto) {
-        return consultingService.create(id, requestDto);
+    public ResponseEntity<ResponseMessage> create(@PathVariable Long id, @RequestBody ConsultingCreateRequestDto requestDto) {
+        ResponseMessage responseMessage = consultingService.create(id, requestDto);
+        return ResponseEntity.ok(responseMessage);
     }
 
     // 해당 학생 상담 전체 조회
