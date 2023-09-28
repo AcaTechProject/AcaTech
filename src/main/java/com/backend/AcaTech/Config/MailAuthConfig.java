@@ -1,5 +1,6 @@
 package com.backend.AcaTech.Config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,7 +10,13 @@ import java.util.Properties;
 
 @Configuration
 public class MailAuthConfig {
-    @Bean(name="mailSender")
+    @Value("${spring.mail.username}")
+    private String username;
+
+    @Value("${spring.mail.password}")
+    private String password;
+
+    @Bean(name = "mailSender")
     public JavaMailSender getJavaMailSender() {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", true);
@@ -21,12 +28,11 @@ public class MailAuthConfig {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("이메일 주소");
-        mailSender.setPassword("비밀번호");
+        mailSender.setUsername(username);
+        mailSender.setPassword(password);
         mailSender.setDefaultEncoding("utf-8");
         mailSender.setJavaMailProperties(properties);
 
         return mailSender;
-
     }
 }
