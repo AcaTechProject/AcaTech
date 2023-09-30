@@ -2,7 +2,6 @@ package com.backend.AcaTech.Controller;
 
 import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Dto.Response.ResponseMessage;
-import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
@@ -102,8 +101,17 @@ public class StudentController {
 
     // 특정 수업을 듣는 학생 리스트 조회 (classId로)
     @GetMapping("/student/byClass/{classId}")
-    public List<StudentListResponseDto> searchByClassName(@PathVariable Long classId) {
-        return studentService.findByName(classId);
+    public ResponseEntity<ResponseMessage<List<StudentListResponseDto>>> searchByClassName(@PathVariable Long classId) {
+        List<StudentListResponseDto> studentList = studentService.findByName(classId);
+
+        if (studentList.isEmpty()) {
+            // 수업을 듣는 학생이 없는 경우
+            ResponseMessage<List<StudentListResponseDto>> responseMessage = new ResponseMessage<>(false, "No students found for classId: " + classId, null);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(responseMessage);
+        } else {
+            ResponseMessage<List<StudentListResponseDto>> responseMessage = new ResponseMessage<>(true, "Students found for classId: " + classId, studentList);
+            return ResponseEntity.ok(responseMessage);
+        }
     }
 
     // 특정 수업을 듣는 학생 리스트 조회 -> 메시지 부분
