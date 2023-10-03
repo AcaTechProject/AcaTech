@@ -10,6 +10,7 @@ import com.backend.AcaTech.Dto.Score.ScoreListResponseDto;
 import com.backend.AcaTech.Service.ConsultingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,9 +55,16 @@ public class ConsultingController {
 
     // 다중 삭제
     @DeleteMapping("/student/consulting/delete-multiple")
-    public void deleteMultipleConsultings(@RequestBody List<Long> ids) {
-        consultingService.deleteMultiple(ids);
+    public ResponseEntity<ResponseMessage<Void>> deleteMultipleConsultings(@RequestBody List<Long> ids) {
+        ResponseMessage<Void> responseMessage = consultingService.deleteMultiple(ids);
+
+        if (responseMessage.isSuccess()) {
+            return ResponseEntity.ok(responseMessage);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseMessage);
+        }
     }
+
 
     // 수정
     @PutMapping("/student/consulting/{conId}")

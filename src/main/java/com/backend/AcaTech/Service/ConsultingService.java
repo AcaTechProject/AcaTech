@@ -119,10 +119,26 @@ public class ConsultingService {
 
     // 삭제
     @Transactional
-    public void deleteMultiple(List<Long> ids) {
-        List<Consulting> consultings = consultingRepository.findByIdIn(ids);
-        consultingRepository.deleteAll(consultings);
+    public ResponseMessage<Void> deleteMultiple(List<Long> ids) {
+        try {
+            if (ids == null || ids.isEmpty()) {
+                return new ResponseMessage<>(false, "id(배열)가 비어 있습니다.", null);
+            }
+
+            List<Consulting> consultings = consultingRepository.findByIdIn(ids);
+
+            if (consultings.isEmpty()) {
+                return new ResponseMessage<>(false, "선택한 상담 내역이 없습니다.", null);
+            }
+
+            consultingRepository.deleteAll(consultings);
+
+            return new ResponseMessage<>(true, "다중 삭제 성공", null);
+        } catch (Exception e) {
+            return new ResponseMessage<>(false, "서버 오류: " + e.getMessage(), null);
+        }
     }
+
 
 
 

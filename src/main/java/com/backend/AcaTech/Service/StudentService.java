@@ -1,5 +1,6 @@
 package com.backend.AcaTech.Service;
 
+import com.backend.AcaTech.Domain.Class.CourseInfo;
 import com.backend.AcaTech.Domain.Student.Student;
 import com.backend.AcaTech.Domain.Student.StudentAttendance;
 import com.backend.AcaTech.Domain.Student.StudentClass;
@@ -8,17 +9,14 @@ import com.backend.AcaTech.Domain.Student.StudentFamily;
 import com.backend.AcaTech.Dto.Student.*;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceListResponseDto;
 import com.backend.AcaTech.Dto.Student.StudentAttendance.StudentAttendanceTotalResponseDto;
-import com.backend.AcaTech.Repository.Student.StudentAttendanceRepository;
-import com.backend.AcaTech.Repository.Student.StudentClassRepository;
-import com.backend.AcaTech.Repository.Student.StudentFamilyRepository;
-import com.backend.AcaTech.Repository.Student.StudentRepository;
+import com.backend.AcaTech.Repository.Student.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
+import com.backend.AcaTech.Dto.Response.ResponseMessage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,22 +28,20 @@ import java.util.stream.Collectors;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-
     private final StudentFamilyRepository studentFamilyRepository;
-
     private final StudentClassRepository studentClassRepository;
     private Student entity;
-
     private final StudentAttendanceRepository studentAttendanceRepository;
+    private final CourseInfoRepository courseInfoRepository;
 
     @Autowired
     // 왜썼더라
-    public StudentService(StudentFamilyRepository studentFamilyRepository, StudentClassRepository studentClassRepository, StudentRepository studentRepository, StudentAttendanceRepository studentAttendanceRepository) {
+    public StudentService(StudentFamilyRepository studentFamilyRepository, StudentClassRepository studentClassRepository, StudentRepository studentRepository, StudentAttendanceRepository studentAttendanceRepository, CourseInfoRepository courseInfoRepository) {
         this.studentFamilyRepository = studentFamilyRepository;
         this.studentClassRepository = studentClassRepository;
         this.studentRepository = studentRepository;
         this.studentAttendanceRepository = studentAttendanceRepository;
-
+        this.courseInfoRepository = courseInfoRepository;
     }
 
     // 신규 학생 추가
@@ -109,8 +105,6 @@ public class StudentService {
         }
         // 다른 필수 입력 항목에 대한 유효성 검사도 추가
     }
-
-
 
     // 학생 상세 조회
     @Transactional
@@ -178,14 +172,21 @@ public class StudentService {
         }
     }
 
-
     // 학생 정보 삭제
     @Transactional
-    public void delete(Long id){
-        Student student = studentRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
+    public ResponseMessage<Void> delete(Long id) {
+        try {
+            Student student = studentRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 학생이 존재하지 않습니다."));
 
-        studentRepository.delete(student);
+            studentRepository.delete(student);
+
+            return new ResponseMessage<>(true, "삭제 성공", null);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseMessage<>(false, ex.getMessage(), null);
+        } catch (Exception e) {
+            return new ResponseMessage<>(false, "서버 오류: " + e.getMessage(), null);
+        }
     }
 
     // 학생 출석 리스트
@@ -256,7 +257,6 @@ public class StudentService {
             dto.setNo((long)(i + 1)); // No 값을 설정
             studentList.add(dto);
         }
-
         return studentList;
     }
 
@@ -275,14 +275,17 @@ public class StudentService {
     }
 
 
-    // 이름으로 검색해보기기
+    // 이름으로 검색해보기
 
     @Transactional
     public List<StudentListResponseDto> findByName(Long classId) {
+        CourseInfo courseInfo = courseInfoRepository.findById(classId)
+                .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
+
         StudentClass studentClass = studentClassRepository.findById(classId)
                 .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + classId));
 
-        String className = studentClass.getClassName();
+        String className = courseInfo.getClassName();
 
         List<StudentClass> studentClasses = studentClassRepository.findByClassName(className);
 
@@ -301,7 +304,6 @@ public class StudentService {
             dto.setNo((long)(i + 1)); // No 값을 설정
             studentList.add(dto);
         }
-
         return studentList;
     }
 
@@ -333,7 +335,6 @@ public class StudentService {
 
     // 그날 출결 정보 등록
     public void createStudentAttendance(Long classId, Long stId, String attO, String attLate, String attX, String attEtc, String attReason, LocalDate attDate, String attResult) {
-
         Optional<Student> studentOptional = studentRepository.findById(stId);
         Optional<StudentClass> studentClassOptional = studentClassRepository.findById(classId);
 
@@ -358,6 +359,4 @@ public class StudentService {
             throw new RuntimeException("Student or Class not found");
         }
     }
-
-
 }
