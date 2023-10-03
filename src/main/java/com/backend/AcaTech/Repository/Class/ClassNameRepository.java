@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ClassNameRepository extends JpaRepository<CourseInfo, Long> {
     List<CourseInfo> findAllByOrderByIdDesc();
-    CourseInfo findByClassName(String className); // 변경된 메서드명
+    CourseInfo findByClassName(String className);
 }

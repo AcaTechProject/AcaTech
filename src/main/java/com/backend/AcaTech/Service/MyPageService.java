@@ -53,13 +53,10 @@ public class MyPageService {
                 // 클래스 이름을 쉼표와 공백으로 구분하여 배열로 분리
                 String[] classNames = classListString.split(", ");
 
-                List<CourseInfo> userClasses = new ArrayList<>();
-
                 for (String className : classNames) {
                     CourseInfo existingClass = classNameRepository.findByClassName(className);
                     if (existingClass != null) {
-                        user.getClasses().clear();
-                        user.getClasses().add(existingClass);
+                        user.getClasses().add(existingClass); // clear하지 않고 추가
                     }
                 }
             }
