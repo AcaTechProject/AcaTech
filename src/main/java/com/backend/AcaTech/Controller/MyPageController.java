@@ -36,7 +36,6 @@ public class MyPageController {
         }
     }
 
-
     @PatchMapping("/user/{id}")
     public User updateUserInformation(@PathVariable Long id, @RequestBody MyPageUpdateRequestDto updateRequestDto) {
         Optional<User> userOptional = myPageService.searchById(id);
@@ -58,25 +57,26 @@ public class MyPageController {
             // 클래스 이름을 쉼표와 공백으로 구분하여 배열로 분리
             String[] classNames = classListString.split(", ");
 
-            List<CourseInfo> userClasses = new ArrayList<>();
+            Set<CourseInfo> userClassesSet = new HashSet<>();
 
             for (String className : classNames) {
                 // 클래스 이름으로 해당 클래스를 찾음
                 CourseInfo existingClass = classNameRepository.findByClassName(className);
 
                 if (existingClass != null) {
-                    userClasses.add(existingClass);
+                    userClassesSet.add(existingClass);
                 } else {
                     // 클래스가 존재하지 않는 경우, 새로운 클래스 생성 및 저장
                     CourseInfo newClass = new CourseInfo(className);
                     classNameRepository.save(newClass);
-                    userClasses.add(newClass);
+                    userClassesSet.add(newClass);
                 }
             }
 
-            Set<CourseInfo> userClassesSet = new HashSet<>(userClasses);
+            // 사용자의 클래스 정보를 업데이트
             user.setClasses(userClassesSet);
         }
+
 
         if (updateRequestDto.getUser_image() != null) {
             user.setImage(updateRequestDto.getUser_image());

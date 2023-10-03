@@ -65,10 +65,10 @@ public class UserService {
     }
 
     public void updateAuthKey(Map<String, String> map) {
-        String email = map.get("email");
+        Optional<String> email = Optional.ofNullable(map.get("email"));
         String authKey = map.get("authKey");
 
-        Optional<User> userOptional = userRepository.findByEmail(email);
+        Optional<User> userOptional = email.flatMap(userRepository::findByEmail);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setAuthKey(authKey);
