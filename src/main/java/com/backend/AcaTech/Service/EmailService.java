@@ -14,11 +14,13 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    /*
     @Value("${mail.from.name}")
     private String fromName;
 
     @Value("${mail.from.email}")
     private String fromEmail;
+    */
 
     public boolean verifyEmail(String email, String authKey) {
         return true;
@@ -30,7 +32,7 @@ public class EmailService {
 
         try {
             MailUtils mailUtils = new MailUtils(mailSender);
-            mailUtils.sendMail(to, subject, content, fromName, fromEmail);
+            mailUtils.sendMail(to, subject, content);
         } catch (Exception e) {
             e.printStackTrace();
         }
