@@ -13,14 +13,14 @@ public class MailUtils {
         this.mailSender = mailSender;
     }
 
-    public void sendMail(String to, String subject, String content, String fromName, String fromEmail)
+    public void sendMail(String to, String subject, String content)
             throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
         helper.setSubject(subject);
         helper.setText(content, true);
-        helper.setFrom(fromEmail, fromName);
+        //helper.setFrom(fromEmail, fromName);
         helper.setTo(to);
 
         mailSender.send(message);
