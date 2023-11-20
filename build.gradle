@@ -45,6 +45,10 @@ application {
 	mainClassName = 'com.backend.AcaTech.AcaTechApplication'
 }
 
+bootJar {
+	mainClassName = 'com.backend.AcaTech.AcaTechApplication'
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
