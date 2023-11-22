@@ -45,6 +45,12 @@ springBoot {
 	mainClassName = 'com.backend.AcaTech.AcaTechApplication'
 }
 
+/*
 tasks.named('test') {
+	useJUnitPlatform()
+}
+*/
+
+test {
 	useJUnitPlatform()
 }
